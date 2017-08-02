@@ -1,0 +1,11 @@
+﻿<div id="welcome" class="padding-xl">
+    <p>欢迎使用{{systemName}},点击左侧菜单进行导航。</p>
+</div>
+<script>
+    new Vue({
+        el: "#welcome",
+        data: {
+            systemName: webConfig.systemName
+        }
+    });
+</script>

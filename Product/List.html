@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="/wwwroot/webConfig.js"></script>
+    <script src="/wwwroot/scripts/referenceCss.js"></script>
+    <script src="/wwwroot/scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="List">
+        <!--导航-->
+        <el-row class="padding-l">
+            <el-col span="12">
+                <span class="font-weight-blder">列表</span>
+            </el-col>
+            <el-col span="12">
+                <el-breadcrumb separator="/" class="float-right">
+                    <el-breadcrumb-item>基础管理</el-breadcrumb-item>
+                    <el-breadcrumb-item>供货商管理</el-breadcrumb-item>
+                </el-breadcrumb>
+            </el-col>
+        </el-row>
+        <!--查询-->
+        <el-form inline="true" model="formInline" ref="search" class="background-color-minor margin-bottom-m padding-m">
+            <el-form-item>
+                <el-input placeholder="产品名" v-model="search.ProductName"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-select v-model="search.Status" placeholder="状态">
+                    <el-option v-for="item in StatusList"
+                               :label="item.label"
+                               :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-radio-group v-model="search.IsSpecialOffer">
+                    <el-radio-button label="">全部</el-radio-button>
+                    <el-radio-button label="true">特卖</el-radio-button>
+                    <el-radio-button label="false">非特卖</el-radio-button>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item>
+                <el-radio-group v-model="search.IsRecommended">
+                    <el-radio-button label="">全部</el-radio-button>
+                    <el-radio-button label="true">推荐</el-radio-button>
+                    <el-radio-button label="false">非推荐</el-radio-button>
+                </el-radio-group>
+            </el-form-item>
+                <el-form-item>
+                    <el-date-picker v-model="search.TimeCreated"
+                                    type="daterange"
+                                    align="right"
+                                    placeholder="创建时间范围">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="loadData">查询</el-button>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onAdd">添加</el-button>
+                </el-form-item>
+        </el-form>
+        <!--列表-->
+        <el-table v-bind:data="list.tableData"
+                  border highlight-current-row
+                  v-bind:default-sort="{prop: 'name', order: 'descending'}"
+                  class="col-12">
+            <el-table-column type="selection"
+                             width="55">
+            </el-table-column>
+            <el-table-column type="expand">
+                <template scope="props">
+                    <p>访问数:{{props.row.VisitedTotal}}</p>
+                    <p>虚数:{{props.row.ImaginaryNumber}}</p>
+                    <p>分类:{{props.row.CategoryName}}</p>
+                    <p>状态:{{props.row.Status}}</p>
+                    <p>上架时间:{{props.row.TimeOnShelf|dataFromat}}</p>
+                    <p>下架时间:{{props.row.TimeOffShelf|dataFromat}}</p>
+                </template>
+            </el-table-column>
+            <el-table-column prop="DefaultPic"
+                             label="图片"
+                             width="160">
+                <template scope="scope">
+                    <img :width="160" :height="160" :src="scope.row.DefaultPic" :alt="scope.row.ProductName" />
+                </template>
+            </el-table-column>
+            <el-table-column prop="ProductName"
+                             label="产品名"
+                             sortable
+                             width="160">
+            </el-table-column>
+            <el-table-column prop="Price"
+                             label="价格">
+                <template scope="scope">
+                    <p class="text-align-right">价格:&yen;{{ scope.row.Price }}</p>
+                    <p class="text-align-right">优惠价格:&yen;{{ scope.row.PromotionPrice }}</p>
+                </template>
+            </el-table-column>
+            <el-table-column prop="SaleTitle"
+                             label="商品名称">
+                <template scope="scope">
+                    <p>销售名:{{ scope.row.SaleTitle }}</p>
+                    <p>销售别名:{{ scope.row.SaleSubTitle }}</p>
+                </template>
+            </el-table-column>
+            <el-table-column prop="ProductNumber"
+                             label="数量">
+                <template scope="scope">
+                    <p class="text-align-right">{{scope.row.ProductNumber}}</p>
+                </template>
+            </el-table-column>
+            <el-table-column prop="SoldTotal"
+                             label="销售数">
+                <template scope="scope">
+                    <p class="text-align-right">{{scope.row.SoldTotal}}</p>
+                </template>
+            </el-table-column>
+            <el-table-column prop="TimeCreated"
+                             label="创建时间"
+                             width="240">
+                <template scope="scope">
+                    <el-icon name="time"></el-icon>
+                    <span>{{scope.row.TimeCreated|dataFromat}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作"
+                             fixed="right"
+                             width="400">
+                <template scope="scope">
+                    <el-button size="small"
+                               v-on:click="onPurchase(scope.$index, scope.row)">
+                        进货
+                    </el-button>
+                    <el-button size="small"
+                               v-on:click="onPurchaseList(scope.$index, scope.row)">进货记录
+                    </el-button>
+                    <el-button v-if="scope.row.Status==='已上架'"
+                               size="small"
+                               v-on:click="onOffShelf(scope.$index, scope.row)">下架
+                    </el-button>
+                    <el-button v-else
+                               size="small"
+                               v-on:click="onOnShelf(scope.$index, scope.row)">上架
+                    </el-button>
+                    <el-button size="small"
+                               v-on:click="onEdit(scope.$index, scope.row)">编辑
+                    </el-button>
+                    <el-button size="small"
+                               type="danger"
+                               v-on:click="onDelete(scope.$index, scope.row)">删除
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!--分页-->
+        <el-pagination class="clear"
+                       v-on:size-change="handleSizeChange"
+                       v-on:current-change="handleCurrentChange"
+                       v-bind:current-page="list.currentPage"
+                       v-bind:page-sizes="[10, 20, 50, 100]"
+                       v-bind:page-size="list.pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       v-bind:total="list.total">
+        </el-pagination>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#List",
+            components: $f.allcomponents,
+            data: {
+                StatusList: [
+                        {
+                            value: "",
+                            label: "全部"
+                        },
+                        {
+                            value: "Default",
+                            label: "未上架"
+                        },
+                        {
+                            value: "OnShelf",
+                            label: "已上架"
+                        },
+                        {
+                            value: "OffShelf",
+                            label: "已下架"
+                        }
+                ],
+                search: {
+                    ProductName: '',
+                    CategoryGuid: null,
+                    Status: "",
+                    ProductNumber: '',
+                    IsSpecialOffer: "",
+                    IsRecommended: "",
+                    TimeCreated:[]
+                },
+                list: {
+                    loading: false,
+                    pageSize: 10,
+                    tableData: [],
+                    currentPage: 1,
+                    total: 0
+                }
+            },
+            filters: {
+              dataFromat:function(v) {
+                  return MSJsonDateToDate(v).Format("yyyy-MM-dd HH:mm:ss");
+              }
+            },
+            methods: {
+                handleSizeChange: function (val) {
+                    this.list.pageSize = val;
+                    this.loadData();
+                },
+                handleCurrentChange: function (val) {
+                    this.list.currentPage = val;
+                    this.loadData();
+                },
+                onAdd: function () {
+                    var me = this;
+                    me.$parent.loadPage("/wwwroot/Product/Detail.html");
+                },
+                onEdit: function (i, m) {
+                    var me = this;
+                    me.$parent.loadPage("/wwwroot/Product/Detail.html?uid=" + m.Guid);
+                },
+                onDelete: function (i, m) {
+                    var me = this;
+                    me.$confirm("确定删除？", "确定").then(function() {
+                        me.$http.post(apiConfig.product_delete, { guid:m.Guid}).then(function () {
+                            me.loadData();
+                        });
+                    });
+                },
+                onPurchase: function (i, m) {
+                    this.$purchaserecord.open({ ProductGuid: m.Guid });
+                },
+                onPurchaseList:function(i,m){
+                    this.$purchaselist.open({ ProductGuid: m.Guid });
+                },
+                onOnShelf:function(i,m){
+                    var me=this;
+                    me.$http.post(apiConfig.product_onshelf, { guid:m.Guid}).then(function () {
+                            me.loadData();
+                        });
+                },
+                onOffShelf:function(i,m){
+                    var me=this;
+                    me.$http.post(apiConfig.product_offshelf, { guid:m.Guid}).then(function () {
+                            me.loadData();
+                        });
+                },
+                getSkip: function () {
+                    var me = this;
+                    return (me.list.currentPage - 1) * me.list.pageSize;
+                },
+                loadData: function () {
+                    var me = this;
+
+                    var queryModel = Object.assign({
+                        skip: me.getSkip(),
+                        top: me.list.pageSize
+                    },
+                    me.search
+                    );
+
+                    if (queryModel.TimeCreated.length > 0 && queryModel.TimeCreated[0] && queryModel.TimeCreated[1]) {
+                        queryModel.TimeCreatedBegin = queryModel.TimeCreated[0].Start().Format("yyyy-MM-dd HH:mm:ss.S");
+                        queryModel.TimeCreatedEnd = queryModel.TimeCreated[1].End().Format("yyyy-MM-dd HH:mm:ss.S");
+                    }
+
+                    me.$http.get(apiConfig.product_query, {
+                        params: queryModel
+                    })
+                    .then(function (response) {
+                        me.list.total = response.data.Total;
+                        me.list.tableData = response.data.Data;
+                    });
+                }
+            },
+            mounted: function () {
+                this.loadData();
+            }
+        });
+    </script>
+</body>
+</html>

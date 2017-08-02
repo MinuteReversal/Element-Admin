@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="../../component/vux/vux.css" rel="stylesheet" />
+    <script src="../../vue.js"></script>
+    <script src="JavaScript.js"></script>
+</head>
+<body>
+    <button @click="ButtonClick">招唤对话框</button>
+    <script>
+        var vm = new Vue({
+            el: "body",
+            methods: {
+                ButtonClick: function () {
+                    this.$alert.open("hello", function () { alert("点击了确定"); });
+                }
+            }
+        });
+
+        vm.$alert.open("hello world");
+    </script>
+</body>
+</html>

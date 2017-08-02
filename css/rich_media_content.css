@@ -1,0 +1,31 @@
+﻿/*wechat*/
+.rich_media_content * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    -webkit-box-sizing: border-box !important;
+    word-wrap: break-word !important;
+}
+
+.rich_media_content p {
+    clear: both;
+    min-height: 1em;
+    white-space: pre-wrap;
+}
+
+.rich_media_content em {
+    font-style: italic;
+}
+
+.rich_media_content fieldset {
+    min-width: 0;
+}
+
+.rich_media_content blockquote {
+    margin: 0;
+    padding-left: 10px;
+    border-left: 3px solid #dbdbdb;
+}
+
+.rich_media_content img {
+    height: auto !important;
+}

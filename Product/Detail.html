@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="/wwwroot/webConfig.js"></script>
+    <script src="/wwwroot/scripts/referenceCss.js"></script>
+    <script src="/wwwroot/scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="Detail" class="padding-xl">
+        <el-row class="padding-l">
+            <el-col span="12">
+                <span class="font-weight-blder">产品详情</span>
+            </el-col>
+            <el-col span="12">
+                <el-breadcrumb separator="/" class="float-right">
+                    <el-breadcrumb-item>基础管理</el-breadcrumb-item>
+                    <el-breadcrumb-item @click="backToList">产品管理</el-breadcrumb-item>
+                    <el-breadcrumb-item>产品详情</el-breadcrumb-item>
+                </el-breadcrumb>
+            </el-col>
+        </el-row>
+        <el-form :model="form" ref="form" label-width="100px" class="form-width">
+            <el-form-item label="产品名称" prop="ProductName">
+                <el-input v-model="form.ProductName"></el-input>
+            </el-form-item>
+            <el-form-item label="商品标题" prop="SaleTitle">
+                <el-input v-model="form.SaleTitle"></el-input>
+            </el-form-item>
+            <el-form-item label="商品副标题" prop="SaleSubTitle">
+                <el-input v-model="form.SaleSubTitle"></el-input>
+            </el-form-item>
+            <el-form-item label="商品分类" prop="SaleSubTitle">
+                <el-select label="商品分类" v-model="form.CategoryGuid" placeholder="Select">
+                    <el-option v-for="item in categories"
+                               :label="item.CategoryName"
+                               :value="item.Guid">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="推荐">
+                <el-switch on-text="" off-text="" v-model="form.IsRecommended"></el-switch>
+            </el-form-item>
+            <el-form-item label="特价">
+                <el-switch on-text="" off-text="" v-model="form.IsSpecialOffer"></el-switch>
+            </el-form-item>
+            <el-form-item label="库存数量" prop="Number">
+                <el-input-number v-model="form.ProductNumber" :disabled="true"></el-input-number>
+            </el-form-item>
+            <el-form-item label="销售虚数" prop="ImaginaryNumber">
+                <el-input-number v-model="form.ImaginaryNumber"></el-input-number>
+            </el-form-item>
+            <el-form-item label="详情" prop="ProductNumber">
+                <ckeditor v-model="form.ProductDetail"></ckeditor>
+            </el-form-item>
+            <el-form-item label="备注" prop="ProductRemark">
+                <ckeditor v-model="form.ProductRemark"></ckeditor>
+            </el-form-item>
+            <el-form-item label="相册" prop="dialogImageUrl">
+                <el-upload action="../Upload.ashx" ref="images"
+                           :file-list="imageList"
+                           list-type="picture-card"
+                           :on-preview="handlePictureCardPreview"
+                           :on-success="handleAlbumsImageUploadSuccess"
+                           :on-remove="handleRemove">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+            </el-form-item>
+            <div>
+                <h2>颜色分类</h2>
+                <el-button type="primary" @click="onAddClassification">添加</el-button>
+                <div v-for="(item,index) in form.Classifications" class="demo-block padding-l margin-l">
+                    <h3>{{item.Name}}</h3>
+                    <el-form-item label="名称" prop="Name">
+                        <el-input v-model="item.Name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="图片" prop="DefaultPic" scope="scope">
+                        <el-upload class="image-uploader"
+                                   action="../Upload.ashx"
+                                   :show-file-list="false"
+                                   :show-upload-list="false"
+                                   :on-success="function(){handleImageUploadSuccess(arguments,item);}">
+                            <img v-if="item.PicUrl!==''" :src="item.PicUrl|image" class="image">
+                            <i v-else class="el-icon-plus image-uploader-icon"></i>
+                        </el-upload>
+                    </el-form-item>
+                    <el-form-item label="数量" prop="Number">
+                        <el-input-number v-model="item.Number" :disabled="true"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="克数" prop="Grams">
+                        <el-input-number v-model="item.Grams"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="销售价格" prop="Price">
+                        <el-input v-model="item.Price"></el-input>
+                    </el-form-item>
+                    <el-form-item label="优惠价格" prop="PromotionPrice">
+                        <el-input v-model="item.PromotionPrice"></el-input>
+                    </el-form-item>
+                    <el-form-item class="text-align-right">
+                        <el-button type="danger" icon="delete" @click="onDeleteClassification(item,index)" :disabled="canNotDelete">删除</el-button>
+                    </el-form-item>
+                </div>
+            </div>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('form')">保存</el-button>
+                <el-button @click="resetForm('form')">返回列表</el-button>
+            </el-form-item>
+        </el-form>
+        <el-dialog v-model="dialogVisible" size="tiny">
+            <img style="width: 100%;" :src="dialogImageUrl" alt="">
+        </el-dialog>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#Detail",
+            components: {
+                "ckeditor":vueCkeditor
+            },
+            data: {
+                dialogImageUrl: '',
+                dialogVisible: false,
+                imageList: [],
+                categories: [],
+                form: {
+                    "Guid": "00000000-0000-0000-0000-000000000000",
+                    "CategoryGuid": "00000000-0000-0000-0000-000000000000",
+                    "ProductName": "产品名称",
+                    "PromotionPrice": 1.3,
+                    "Price": 2.4,
+                    "SaleSubTitle": "副标题",
+                    "SaleTitle": "标题",
+                    "DefaultPic": "product.jpg",
+                    "ProductNumber": 10,
+                    "ProductDetail": "没有详情",
+                    "ProductRemark": "没有备注",
+                    "IsRecommended": true,
+                    "IsSpecialOffer": true,
+                    "DisplayOrder": 0,
+                    "ImaginaryNumber": 0,
+                    "Classifications": [
+                        {
+                            "Guid": "00000000-0000-0000-0000-000000000000",
+                            "ProductGuid": "00000000-0000-0000-0000-000000000000",
+                            "Name": "",
+                            "Grams": 0,
+                            "Number": 0,
+                            "Price": 0,
+                            "PromotionPrice": 0,
+                            "PicUrl": ""
+                        }
+                    ],
+                    "Albums": [
+
+                    ]
+                },
+                rules: {
+                    //name: [
+                    //    { required: true, message: '请输入活动名称', trigger: 'blur' },
+                    //    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                    //],
+                    //region: [
+                    //    { required: true, message: '请选择活动区域', trigger: 'change' }
+                    //],
+                    //date1: [
+                    //    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                    //],
+                    //date2: [
+                    //    { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+                    //],
+                    //type: [
+                    //    { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+                    //],
+                    //resource: [
+                    //    { required: true, message: '请选择活动资源', trigger: 'change' }
+                    //],
+                    //desc: [
+                    //    { required: true, message: '请填写活动形式', trigger: 'blur' }
+                    //]
+                }
+            },
+            methods: {
+                handleImageUploadSuccess: function (args, model) {
+                    model.PicUrl = args[0].Data;
+                },
+                handleAlbumsImageUploadSuccess: function (res, file) {
+                    //this.ImageUrl = res.Data;
+                    this.form.Albums.push({
+                        "Guid": res.Data.split(".")[0],
+                        "ProductGuid": this.form.Guid,
+                        "ImageUrl": res.Data,
+                        "DisplayOrder": 0
+                    });
+                    this.setImageList();
+                },
+                setImageList: function () {
+                    this.imageList = [];
+                    for (var i = 0, item; item = this.form.Albums[i]; i++) {
+                        this.imageList.push({
+                            name: item.ImageUrl,
+                            url: webConfig.resourceServerAddress + item.ImageUrl
+                        });
+                    }
+                },
+                getCategories: function () {
+                    var me = this;
+                    var queryModel = {
+                        skip: 0,
+                        top: 0
+                    };
+                    me.$http.get(apiConfig.category_query, {
+                        params: queryModel
+                    }).then(function (response) {
+                        me.categories = response.data.Data;
+                    });
+                },
+                beforeImageUpload: function (file) {
+                    var isJPG = file.type === 'image/jpeg';
+                    var isLt2M = file.size / 1024 / 1024 < 2;
+
+                    if (!isLt2M) {
+                        this.$message.error('请上传小于 2MB 的图片!');
+                    }
+                    return isLt2M;
+                },
+                handleRemove: function (file, fileList) {
+                    console.log(file, fileList);
+                },
+                handlePictureCardPreview: function (file) {
+                    this.dialogImageUrl = file.url;
+                    this.dialogVisible = true;
+                },
+                onAddClassification: function () {
+                    this.form.Classifications.push({
+                        "Guid": "00000000-0000-0000-0000-000000000000",
+                        "ProductGuid": "00000000-0000-0000-0000-000000000000",
+                        "Name": "",
+                        "Grams": 0,
+                        "Number": 0,
+                        "Price": 0,
+                        "PromotionPrice": 0,
+                        "PicUrl": ""
+                    });
+                },
+                onDeleteClassification: function (item, index) {
+                    var me = this;
+                    me.$confirm("确定删除？" + item.Name).then(function () {
+                        me.form.Classifications.splice(index, 1);
+                    });
+                },
+                submitForm: function (formName) {
+                    //this.$refs[formName].validate(function (valid) {
+                    //    if (valid) {
+                    //        alert('submit!');
+                    //        return true;
+                    //    } else {
+                    //        console.log('error submit!!');
+                    //        return false;
+                    //    }
+                    //});
+                    this.$http.post(apiConfig.product_save, this.form).then(function (response) {
+                        this.$message({
+                            type: 'success',
+                            message: "保存成功"
+                        });
+                    });
+                },
+                getData: function () {
+                    this.$http.get(apiConfig.product_detail, $f.getQueryString("uid")).then(function (response) {
+                        this.form = response.data.Data;
+                        this.setImageList();
+                    });
+                },
+                backToList: function () {
+                    this.$parent().loadPage("/wwwroot/Product/List.html");
+                },
+                resetForm: function (formName) {
+                    this.$refs[formName].resetFields();
+                }
+            },
+            computed: {
+                canNotDelete: function () {
+                    return this.form.Classifications.length === 1;
+                }
+            },
+            filters: {
+                image: function (filename) {
+                    return webConfig.resourceServerAddress + filename;
+                }
+            },
+            mounted: function () {
+                this.getCategories();
+            }
+        });
+    </script>
+</body>
+</html>

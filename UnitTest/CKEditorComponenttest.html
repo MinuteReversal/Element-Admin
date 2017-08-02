@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../webConfig.js"></script>
+    <script src="../scripts/referenceCss.js"></script>
+    <script src="../scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="Detail" class="padding-xl form-width">
+        <ckeditor v-model="value" :is-html-encode="true" contents-css="/wwwroot/css/rich_media_content.css" body-class="rich_media_content"></ckeditor>
+        <button @click="value='hello wrold'">设置值</button>
+        <button @click="showData">获取值</button>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#Detail",
+            components: {
+                "ckeditor": vueCkeditor
+            },
+            data: {
+                value: "def"
+            },
+            methods: {
+                showData: function () {
+                    this.$alert(this.value);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

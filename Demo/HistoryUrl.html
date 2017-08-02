@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../webConfig.js"></script>
+    <script src="../scripts/referenceCss.js"></script>
+    <script src="../scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="demo">
+        <el-input model=""></el-input>
+        <el-button @click="onDetail">详情</el-button>
+        <el-button @click="onList">列表</el-button>
+        <el-button @click="onListdetail">列表详情</el-button>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#demo",
+            components: $f.allComponents,
+            data: {
+                
+            },
+            methods: {
+                onDetail: function () {
+                    var me = this;
+                    me.$loaderwindow("Detail.html")
+                        .then(function (evt) {
+                            me.$alert(JSON.stringify(evt));
+                        })
+                        .catch(function () {
+                            me.$message({
+                                "type": "info",
+                                "message": "用户关闭了窗口"
+                            });
+                        });
+                },
+                onList: function () {
+                    var me = this;
+                    me.$loaderwindow("List.html");
+                },
+                onListdetail: function () {
+                    var me = this;
+                    me.$loaderwindow("ListDetail.html");
+                }
+            },
+            mounted: function () { }
+        });
+    </script>
+</body>
+</html>

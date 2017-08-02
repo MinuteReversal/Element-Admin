@@ -1,0 +1,127 @@
+.loginBody {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /*background-color: #20a0ff;*/
+}
+
+.login {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-clip: padding-box;
+    width: 380px;
+    padding: 35px 35px 15px;
+    background: #fff;
+    border: 1px solid #eaeaea;
+    box-shadow: 0px 0px 25px #cac6c6;
+}
+
+    .login.title {
+        margin: 0 auto 40px;
+        text-align: center;
+        color: #505458;
+    }
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.menu-width {
+    width: 230px;
+}
+
+.user-info {
+    position: absolute;
+    right: 0px;
+    top: 0;
+}
+
+.menu {
+    position: absolute;
+    left: 0;
+    top: 60px;
+    bottom: 0;
+    width: 230px;
+    clear: both;
+    background-color: #eef1f6;
+    overflow-y: auto;
+}
+
+.subPage {
+    position: absolute;
+    top: 60px;
+    left: 230px;
+    right: 0;
+    bottom: 0;
+    clear: both;
+    overflow-y: auto;
+}
+
+.image-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+    .image-uploader .el-upload:hover {
+        border-color: #20a0ff;
+    }
+
+.image-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+
+.image {
+    width: 178px;
+    height: 178px;
+    display: block;
+}
+
+.demo-block {
+    border: 1px solid #eaeefb;
+    border-radius: 4px;
+    transition: .2s;
+}
+
+[list-type=picture-card] {
+    background-color: #fbfdff;
+    border: 1px dashed #c0ccda;
+    border-radius: 6px;
+    box-sizing: border-box;
+    width: 148px;
+    height: 148px;
+    cursor: pointer;
+    line-height: 146px;
+    vertical-align: top;
+    text-align: center;
+}
+
+    [list-type=picture-card] i {
+        font-size: 28px;
+        color: #8c939d;
+    }
+
+    [list-type=picture-card] .el-upload__inner {
+        width: 100%;
+    }
+
+
+.el-dialog__body .form-width {
+    width:100%;
+}

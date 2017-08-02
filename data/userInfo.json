@@ -1,0 +1,168 @@
+﻿{
+  "Success": true,
+  "ErrorUrl": "",
+  "ErrorMsg": "",
+  "ExceptionType": 0,
+  "RedirectUrl": "",
+  "Total": 0,
+  "Data": {
+    "UserGuid": "00000000-0000-0000-0000-000000000000",
+    "UserName": "admin",
+    "NickName": "反转的分针",
+    "UserMenuModels": [
+      {
+        "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+        "ParentGuid": "00000000-0000-0000-0000-000000000000",
+        "FunctionName": "欢迎",
+        "DisplayName": "欢迎",
+        "Icon": "el-icon-message",
+        "ActionUrl": "",
+        "FunctionType": "",
+        "ChildrenModels": [
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "欢迎",
+            "DisplayName": "欢迎",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Home/Welcome.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          }
+        ]
+      },
+      {
+        "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+        "ParentGuid": "00000000-0000-0000-0000-000000000000",
+        "FunctionName": "示例",
+        "DisplayName": "示例",
+        "Icon": "el-icon-message",
+        "ActionUrl": "",
+        "FunctionType": "",
+        "ChildrenModels": [
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "列表",
+            "DisplayName": "列表",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Demo/List.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "表单",
+            "DisplayName": "表单",
+            "Icon": "el-icon-menu",
+            "ActionUrl": "/wwwroot/Demo/Detail.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "列表与表单",
+            "DisplayName": "列表与表单",
+            "Icon": "",
+            "ActionUrl": "/wwwroot/Demo/ListDetail.html",
+            "FunctionType": "el-icon-setting",
+            "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "列表展开加载",
+            "DisplayName": "列表展开加载",
+            "Icon": "",
+            "ActionUrl": "/wwwroot/Demo/ListExpandLoadComponent.html",
+            "FunctionType": "el-icon-setting",
+            "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "帮助文档",
+            "DisplayName": "帮助文档",
+            "Icon": "",
+            "ActionUrl": "/wwwroot/Demo/Docs.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          }
+        ]
+      },
+      {
+        "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+        "ParentGuid": "00000000-0000-0000-0000-000000000000",
+        "FunctionName": "基础管理",
+        "DisplayName": "基础管理",
+        "Icon": "el-icon-message",
+        "ActionUrl": "",
+        "FunctionType": "",
+        "ChildrenModels": [
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "供货商管理",
+            "DisplayName": "供货商管理",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Supplier/List.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "订单管理",
+            "DisplayName": "订单管理",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Order/List.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "进货列表",
+            "DisplayName": "进货列表",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Purchase/List.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "产品列表",
+            "DisplayName": "产品列表",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Product/List.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          }
+        ]
+      },
+      {
+        "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+        "ParentGuid": "00000000-0000-0000-0000-000000000000",
+        "FunctionName": "导航二",
+        "DisplayName": "导航二",
+        "Icon": "el-icon-menu",
+        "ActionUrl": "",
+        "FunctionType": "",
+        "ChildrenModels": []
+      },
+      {
+        "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+        "ParentGuid": "00000000-0000-0000-0000-000000000000",
+        "FunctionName": "导航三",
+        "DisplayName": "导航三",
+        "Icon": "el-icon-setting",
+        "ActionUrl": "",
+        "FunctionType": "",
+        "ChildrenModels": []
+      }
+    ]
+  }
+}

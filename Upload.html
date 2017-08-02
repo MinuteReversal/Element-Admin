@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <input id="fileBrowser" type="file" /><br />
+    <input id="path" type="url" /><button id="btnGo">访问</button>
+    <script>
+        var fb = document.querySelector("#fileBrowser"),
+            path = document.querySelector("#path"),
+            btnGo = document.querySelector("#btnGo"),
+            xhr = new XMLHttpRequest();
+
+
+        xhr.addEventListener("load", function (loadEvent) {
+            var result = JSON.parse(this.responseText);
+            path.value = "/wwwroot/Upload/" + result.Data;
+        });
+
+        btnGo.addEventListener("click", function (clickEvent) {
+            window.open(path.value);
+        });
+
+        fb.addEventListener("change", function (changeEvent) {
+            var me = this,
+                file = me.files[0],
+                fd = new FormData();
+
+            fd.append(file.name, file);
+
+            xhr.open("POST", "Upload.ashx");
+            xhr.send(fd);
+        });
+    </script>
+</body>
+</html>

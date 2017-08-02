@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../scripts/vue.min.js"></script>
+</head>
+<body>
+    <div id="Detail">
+       <ccc :value="text"></ccc>       
+    </div>
+    <script>
+        var c = {
+            template: "<div><input type=\"text\" :value=\"value\" @input=\"updateValue($event.target.value)\"></div>",
+            props: ["value"],
+            methods: {
+                updateValue: function (val) {
+                    this.$emit("input",val);//dispatch 
+                }
+            }
+        };
+
+        var vm = new Vue({
+            el: "#Detail",
+            components: {
+                "ccc": c
+            },
+            data: {
+               text:"abc" 
+            }
+        });
+    </script>
+</body>
+</html>

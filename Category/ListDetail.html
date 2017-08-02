@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="/wwwroot/webConfig.js"></script>
+    <script src="/wwwroot/scripts/referenceCss.js"></script>
+    <script src="/wwwroot/scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="List">
+        <!--导航-->
+        <el-row class="padding-l">
+            <el-col span="12">
+                <span class="font-weight-blder">列表</span>
+            </el-col>
+            <el-col span="12">
+                <el-breadcrumb separator="/" class="float-right">
+                    <el-breadcrumb-item to="{ path: '/' }">首页</el-breadcrumb-item>
+                    <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+                    <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+                    <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+                </el-breadcrumb>
+            </el-col>
+        </el-row>
+        <!--查询-->
+        <el-form inline="true" model="formInline" class="background-color-minor margin-bottom-m padding-m">
+            <el-form-item>
+                <el-input v-model="search.CategoryName" placeholder="分类名称"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="loadData">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onAdd">添加</el-button>
+            </el-form-item>
+        </el-form>
+        <!--列表-->
+        <el-table v-bind:data="list.tableData"
+                  border highlight-current-row
+                  v-bind:default-sort="{prop: 'name', order: 'descending'}"
+                  class="col-12">
+            <el-table-column prop="CategoryName"
+                             label="分类名称"
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="DisplayOrder"
+                             label="显示顺序"
+                             sortable
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="TimeCreated "
+                             label="创建时间">
+                <template scope="scope">
+                    <el-icon name="time"></el-icon>
+                    <span>{{ scope.row.TimeCreated |dataFromat}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作"
+                             fixed="right"
+                             width="400">
+                <template scope="scope">
+                    <el-button size="small"
+                               v-on:click="onEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="small"
+                               type="danger"
+                               v-on:click="onDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+
+        </el-table>
+        <!--分页-->
+        <el-pagination class="clear"
+                       v-on:size-change="handleSizeChange"
+                       v-on:current-change="handleCurrentChange"
+                       v-bind:current-page="list.currentPage"
+                       v-bind:page-sizes="[10, 20, 50, 100]"
+                       v-bind:page-size="list.pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       v-bind:total="list.total">
+        </el-pagination>
+
+        <!--详情-->
+        <el-dialog title="分类详情" v-model="detail.isVisible">
+            <el-form v-bind:model="form" v-bind:rules="rules" ref="form" label-width="100px" class="demo-form">
+                <el-form-item label="分类名称" prop="CategoryName ">
+                    <el-input v-model="form.CategoryName"></el-input>
+                </el-form-item>
+                <el-form-item label="数量" prop="DisplayOrder">
+                    <el-input-number v-model="form.DisplayOrder" :disabled="true"></el-input-number>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="detail.isVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submitDetail">确 定</el-button>
+            </div>
+        </el-dialog>
+
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#List",
+            components: $f.allcomponents,
+            data: {
+                model: {
+                    Guid: Guid.empty.toString(),
+                    CategoryName: '',
+                    DisplayOrder: 0,
+                    TimeCreated: new Date().Format("yyyy-MM-dd HH:mm:ss")
+                },
+                search: {
+                    CategoryName: ''
+                },
+                form: {
+                    Guid: Guid.empty.toString(),
+                    CategoryName: '',
+                    DisplayOrder: 0,
+                    TimeCreated: new Date().Format("yyyy-MM-dd HH:mm:ss")
+                },
+                rules: {
+                    CategoryName: [
+                        { required: true, message: '分类名称', trigger: 'blur' },
+                        { min: 3, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+                    ]
+                },
+                detail: {
+                    isVisible: false
+                },
+                list: {
+                    loading: false,
+                    pageSize: 10,
+                    tableData: [],
+                    currentPage: 1,
+                    total: 0
+                }
+            },
+            filters: {
+                dataFromat: function (v) {
+                    return MSJsonDateToDate(v).Format("yyyy-MM-dd HH:mm:ss");
+                }
+            },
+            methods: {
+                handleSizeChange: function (val) {
+                    this.list.pageSize = val;
+                    this.loadData();
+                },
+                handleCurrentChange: function (val) {
+                    this.list.currentPage = val;
+                    this.loadData();
+                },
+                onAdd: function () {
+                    var me = this;
+                    me.form = me.model;
+                    me.detail.isVisible = true;
+                },
+                onEdit: function (i, m) {
+                    var me = this;
+                    me.form = m;
+                    me.detail.isVisible = true;
+                },
+                onDelete: function (i, m) {
+                    var me = this;
+                    me.$confirm("确定删除？", "确定");
+                },
+                submitDetail: function () {
+                    this.detail.isVisible = false;
+                },
+                getSkip: function () {
+                    var me = this;
+                    return (me.list.currentPage - 1) * me.list.pageSize;
+                },
+                loadData: function () {
+                    var me = this;
+
+                    var queryModel = Object.assign({
+                        skip: me.getSkip(),
+                        top: me.list.pageSize
+                    },
+                        me.search
+                    );
+
+                    me.$http.get(apiConfig.category_query, {
+                        params: queryModel
+                    }).then(function (response) {
+                        me.list.total = response.data.Total;
+                        me.list.tableData = response.data.Data;
+                    });
+
+                }
+            },
+            mounted: function () {
+                var me = this;
+                //me.loadData();
+            }
+        });
+    </script>
+</body>
+</html>

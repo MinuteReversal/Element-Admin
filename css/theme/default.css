@@ -1,0 +1,255 @@
+﻿/*
+*默认主题文件
+*字体颜色、背景颜色、边框颜色、阴影颜色、字体大小、图标
+*/
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+    *:before,
+    *:after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+html {
+    font-family: '微软雅黑','黑体', "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-tap-highlight-color: white;
+}
+
+body {
+    font-size: 13px;
+    color: rgb(102, 102, 102);
+}
+
+
+input::-webkit-input-placeholder,
+::-webkit-input-placeholder {
+    color: #ADADAD;
+}
+
+input:-moz-placeholder,
+:-moz-placeholder {
+    color: #ADADAD;
+}
+
+input::-moz-placeholder,
+::-moz-placeholder {
+    color: #ADADAD;
+}
+
+input:-ms-input-placeholder,
+:-ms-input-placeholder {
+    color: #ADADAD;
+}
+
+/*字体大小*/
+.font-size-xs {
+    font-size: 13px;
+}
+
+.font-size-s {
+    font-size: 15px;
+}
+
+.font-size-m {
+    font-size: 16px;
+}
+
+.font-size-l {
+    font-size: 18px;
+}
+
+.font-size-xl {
+    font-size: 20px;
+}
+
+.font-size-xxl {
+    font-size: 28px;
+}
+
+/*字体加粗*/
+.font-weight-blder {
+    font-weight: bold;
+}
+
+.font-weight-bolder {
+    font-weight: bolder;
+}
+
+/*颜色*/
+.color-white {
+    color: white;
+}
+
+.color-black {
+    color: black;
+}
+
+.color-gray {
+    color: #EEEEEE;
+}
+
+.color-highlight {
+    color: #da2717;
+}
+
+.background-color-white {
+    background-color: white;
+}
+
+.background-color-black {
+    background-color: black;
+}
+
+.background-color-gray {
+    background-color: #EEEEEE;
+}
+
+.background-color-minor {
+    background-color: #eef1f6;
+}
+
+.background-color-red,
+.background-color-highlight {
+    background-color:#20a0ff;
+}
+
+.background-color-main {
+    background-color: #20a0ff;
+}
+
+/*#region 边框*/
+/*边框颜色*/
+.border-color-default {
+    border-color: #ccc;
+}
+
+.border-color-highlight {
+    border-color: #20a0ff;
+}
+/*#endregion*/
+
+.page > header {
+    line-height: 60px;
+}
+
+.page > footer {
+    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/*图标大小*/
+[class*=icon-size] {
+    display: block;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+
+.icon-size-xs {
+    padding-left: 28px; /*10 + 13 + 5*/
+    background-size: 13px 13px;
+    background-position: 10px 7px;
+}
+
+.icon-size-s {
+    padding-left: 30px; /*10 + 15 + 5*/
+    background-size: 15px 15px;
+    background-position: 10px 6px;
+}
+
+
+.icon-size-m {
+    padding-left: 33px; /*10 + 18 + 5*/
+    background-size: 18px 18px;
+    background-position: 10px 5px;
+}
+
+.icon-size-l {
+    padding-left: 35px; /*10 + 20(icon width) + 5*/
+    background-size: 20px 20px;
+    background-position: 10px 6px;
+}
+
+.icon-size-xl {
+    padding-left: 37px; /*10 + 22 + 5*/
+    background-size: 22px 22px;
+    background-position: 10px 6px;
+}
+
+/*图标纹理*/
+.icon-texture-good {
+    background-image: url("/css/theme/default/good.png");
+}
+
+.icon-texture-search {
+    background-image: url("/css/theme/default/search.png");
+}
+
+.icon-texture-join {
+    background-image: url('/css/theme/default/u279.png');
+}
+
+.icon-texture-search {
+    background-image: url('/css/theme/default/search.png');
+}
+
+.icon-texture-return {
+    background-image: url('/css/theme/default/u279.png');
+}
+/*#region 元件*/
+/*按钮颜色*/
+.btn {
+    color: white;
+    background-color: #da2717;
+    box-shadow: none;
+}
+
+    .btn:visited,
+    .btn:active {
+        background-color: #d74c3f;
+    }
+
+    .btn[class*="icon-size"] {
+        display: inline;
+        width: auto;
+        height: auto;
+    }
+/*#endregion*/
+
+/*#region 控件*/
+.big-tab .vux-tab-selected {
+    color: #da2717 !important;
+    border-bottom: 1px solid #da2717 !important;
+}
+
+.big-tab .vux-tab-ink-bar {
+    background-color: #da2717 !important;
+}
+
+/*选项按钮*/
+.small-tab.vux-button-group > a.hover,
+.small-tab.vux-button-group > a.vux-button-group-current,
+.small-tab.vux-button-group > a:active {
+    color: white;
+    border-color: #da2717;
+    background-color: #da2717;
+}
+
+.small-tab.vux-button-group > a {
+    color: #da2717;
+    border-color: #da2717;
+}
+
+.small-tab .vux-button-group > a {
+    border-color: #da2717;
+}
+/*#endregion*/
+/*#region swipe*/
+.dotsClass .active {
+    background-color: #da2717 !important;
+}
+/*#endregion*/

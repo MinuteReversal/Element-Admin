@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>loader</title>
+    <script src="/wwwroot/webConfig.js"></script>
+    <script src="/wwwroot/scripts/referenceCss.js"></script>
+    <script src="/wwwroot/scripts/referenceJs.js"></script>
+</head>
+<body>
+    <component id="app" v-bind:is="mainView"></component>
+    <script>
+        $f.ui = new Vue({
+            el: "#app",
+            data: {
+                mainView: null
+            },
+            methods: {
+                loadPage: function (url, fnCallBack) {
+                    var me = this;
+                    var loading = me.$loading();
+                    $f.getPageComponent({
+                        url: url,
+                        success: function (component) {
+                            loading.close();
+                            me.mainView = component;
+                            me.$nextTick(function () {
+                                if (fnCallBack) fnCallBack();
+                            });
+                        },
+                        error: function () {
+                            loading.close();
+                        }
+                    });
+                }
+            },
+            mounted: function () {
+                document.title = webConfig.systemName;
+                this.loadPage("/wwwroot/login.html");
+            }
+        });
+    </script>
+</body>
+</html>

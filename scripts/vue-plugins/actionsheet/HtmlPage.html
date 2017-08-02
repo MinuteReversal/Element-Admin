@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="apple-touch-fullscreen" content="YES" />
+    <meta name="apple-mobile-web-app-capable" content="YES" />
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <link href="../../weui.min.css" rel="stylesheet" />
+    <script src="../../vue.js"></script>
+    <script src="JavaScript.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="bd spacing">
+            <button @click="buttonClick" class="weui_btn weui_btn_primary">招唤ActionSheet</button>
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "body",
+            methods: {
+                buttonClick: function () {
+                    this.$actionsheet.open({
+                        menus: [
+                            { text: "来点音乐", click: function () { alert("音乐来了") } },
+                            { text: "都给我站好了", click: function () { alert("啪啪啪") } },
+                            { text: "竜神の剣を喰らえ", click: function () { alert("额~") } },
+                            { text: "回到家的感觉真好", click: function () { alert("咻咻咻") } }
+                        ],
+                        cancelText: "退出",
+                        onCancel: function () {
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

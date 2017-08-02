@@ -1,0 +1,67 @@
+﻿{
+  "Success": true,
+  "ErrorUrl": "",
+  "ErrorMsg": "",
+  "ExceptionType": 0,
+  "RedirectUrl": "",
+  "Total": 0,
+  "Data": {
+    "Guid": "00000000-0000-0000-0000-000000000000",
+    "CategoryGuid": "00000000-0000-0000-0000-000000000001",
+    "ProductName": "aaaa",
+    "PromotionPrice": 1.3,
+    "Price": 2.4,
+    "SaleSubTitle": "fdsafdsa",
+    "SaleTitle": "fdsafdsa",
+    "DefaultPic": "product.jpg",
+    "ProductNumber": 10,
+    "ProductDetail": "fdsafdsa",
+    "ProductRemark": "fdsafdsa",
+    "IsRecommended": true,
+    "IsSpecialOffer": true,
+    "DisplayOrder": 0,
+    "ImaginaryNumber": 2,
+    "Classifications": [
+      {
+        "Guid": "00000000-0000-0000-0000-000000000000",
+        "ProductGuid": "00000000-0000-0000-0000-000000000000",
+        "Name": "bbb",
+        "Grams": 22,
+        "Number": 0,
+        "Price": "11",
+        "PromotionPrice": "22",
+        "PicUrl": "9291e0e8-92a9-4043-9a25-730ba310394d.jpg"
+      },
+      {
+        "Guid": "00000000-0000-0000-0000-000000000000",
+        "ProductGuid": "00000000-0000-0000-0000-000000000000",
+        "Name": "aaa",
+        "Grams": 2,
+        "Number": 0,
+        "Price": "ddd",
+        "PromotionPrice": "fsfs",
+        "PicUrl": "c2c52512-0d53-4d66-803b-8034dfff157d.jpg"
+      }
+    ],
+    "Albums": [
+      {
+        "Guid": "bb5cecbd-8b34-4ffd-b958-287ccafa6c50",
+        "ProductGuid": "00000000-0000-0000-0000-000000000000",
+        "ImageUrl": "bb5cecbd-8b34-4ffd-b958-287ccafa6c50.jpg",
+        "DisplayOrder": 0
+      },
+      {
+        "Guid": "1e376ddd-a338-4036-ab8e-a0d04a672b7f",
+        "ProductGuid": "00000000-0000-0000-0000-000000000000",
+        "ImageUrl": "1e376ddd-a338-4036-ab8e-a0d04a672b7f.jpg",
+        "DisplayOrder": 0
+      },
+      {
+        "Guid": "c6c40569-f4ef-473c-ba7e-53c9897138b0",
+        "ProductGuid": "00000000-0000-0000-0000-000000000000",
+        "ImageUrl": "c6c40569-f4ef-473c-ba7e-53c9897138b0.jpg",
+        "DisplayOrder": 0
+      }
+    ]
+  }
+}

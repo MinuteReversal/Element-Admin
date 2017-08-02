@@ -1,0 +1,25 @@
+﻿{
+  "Success": true,
+  "ErrorUrl": "",
+  "ErrorMsg": "",
+  "ExceptionType": 0,
+  "RedirectUrl": "",
+  "Total": 0,
+  "Data": [
+    {
+      "Guid": "00000000-0000-0000-0000-000000000000",
+      "OrderNo": "123456789",
+      "OrderAmount": 10,
+      "ProductName": "西瓜",
+      "ProductNumber": 100,
+      "UserNickName": "反转的分针",
+      "DeliveryAddress": "好望角",
+      "PaymentName": "xxxx",
+      "PayBatch": "yyyy",
+      "DeliveryName": "zzzz",
+      "OrderStatus": "已发货",
+      "TimePaid": "/Date(1491638675825)/",
+      "TimeCreated": "/Date(1491638675825)/"
+    }
+  ]
+}

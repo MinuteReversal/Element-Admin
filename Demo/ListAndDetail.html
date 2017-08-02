@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../webConfig.js"></script>
+    <script src="../scripts/referenceCss.js"></script>
+    <script src="../scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="List">
+        <!--导航-->
+        <el-row class="padding-l">
+            <el-col span="12">
+                <span class="font-weight-blder">列表</span>
+            </el-col>
+            <el-col span="12">
+                <el-breadcrumb separator="/" class="float-right">
+                    <el-breadcrumb-item>列表</el-breadcrumb-item>
+                    <el-breadcrumb-item>详情</el-breadcrumb-item>
+                </el-breadcrumb>
+            </el-col>
+        </el-row>
+        <!--查询-->
+        <el-form inline="true" model="formInline" class="background-color-minor margin-bottom-m padding-m">
+            <el-form-item>
+                <el-input placeholder="名称"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-input placeholder="电话"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-input placeholder="地址"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-input placeholder="时间"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @@click="loadData">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @@click="onAdd">添加</el-button>
+            </el-form-item>
+        </el-form>
+        <!--列表-->
+        <el-table v-bind:data="list.tableData"
+                  border highlight-current-row
+                  v-bind:default-sort="{prop: 'name', order: 'descending'}"
+                  class="col-12">
+            <el-table-column type="selection"
+                             width="55">
+            </el-table-column>
+            <el-table-column prop="name"
+                             label="名称 "
+                             sortable
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="phone"
+                             label="电话">
+            </el-table-column>
+            <el-table-column prop="address"
+                             label="地址">
+            </el-table-column>
+            <el-table-column prop="time"
+                             label="时间"
+                             width="180">
+            </el-table-column>
+            <el-table-column label="操作"
+                             fixed="right"
+                             width="400">
+                <template scope="scope">
+                    <el-button size="small"
+                               v-on:click="onEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="small"
+                               type="danger"
+                               v-on:click="onDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+
+        </el-table>
+        <!--分页-->
+        <el-pagination class="clear"
+                       v-on:size-change="handleSizeChange"
+                       v-on:current-change="handleCurrentChange"
+                       v-bind:current-page="list.currentPage"
+                       v-bind:page-sizes="[10, 20, 50, 100]"
+                       v-bind:page-size="list.pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       v-bind:total="list.total">
+        </el-pagination>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#List",
+            components: $f.allcomponents,
+            data: {
+                model: {
+                    Guid: Guid.empty.toString(),
+                    Name: '',
+                    Phone: '',
+                    Address: '',
+                    Time: new Date()
+                },
+                detail: {
+                    isVisible: false,
+                    form: {},
+                    rules: {
+                        Guid: [
+                            { required: true, message: '请输入活动名称', trigger: 'blur' },
+                            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                        ],
+                        Name: [
+                            { required: true, message: '请选择活动区域', trigger: 'change' }
+                        ],
+                        Phone: [
+                            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                        ],
+                        Address: [
+                            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+                        ],
+                        type: [
+                            { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+                        ],
+                        resource: [
+                            { required: true, message: '请选择活动资源', trigger: 'change' }
+                        ],
+                        desc: [
+                            { required: true, message: '请填写活动形式', trigger: 'blur' }
+                        ]
+                    }
+                },
+                list: {
+                    loading: false,
+                    pageSize: 10,
+                    tableData: [],
+                    currentPage: 1,
+                    total: 0
+                }
+            },
+            methods: {
+                handleSizeChange: function (val) {
+                    this.list.pageSize = val;
+                    this.loadData();
+                },
+                handleCurrentChange: function (val) {
+                    this.list.currentPage = val;
+                    this.loadData();
+                },
+                onAdd: function () {
+                    var me = this;
+                    me.$loaderWindow
+                },
+                onEdit: function (i, m) {
+                    var me = this;
+
+                },
+                onDelete: function (i, m) {
+                    var me = this;
+                    me.$confirm("确定删除？", "确定");
+                },
+                submitDetail: function () {
+                    this.detail.isVisible = false;
+                },
+                getSkip: function () {
+                    var me = this;
+                    return (me.list.currentPage - 1) * me.list.pageSize;
+                },
+                loadData: function () {
+                    var me = this;
+                    //me.$http.get("/data/demolist.json", {
+                    //    params: {
+                    //        skip: me.getSkip(),
+                    //        top: me.list.pageSize
+                    //    }
+                    //})
+                    //    .then(function (response) {
+                    //        me.list.total = response.data.Total;
+                    //        me.list.tableData = response.data.Data;
+                    //    });
+
+                    var data = {
+                        "Errors": "",
+                        "Total": 40,
+                        "Data": [
+                            {
+                                "time": "2016-05-02",
+                                "name": "张三",
+                                "phone": "12345678901",
+                                "address": "上海市普陀区金沙江路 1518 弄"
+                            },
+                            {
+                                "date": "2016-05-04",
+                                "name": "李四",
+                                "phone": "12345678902",
+                                "address": "上海市普陀区金沙江路 1517 弄"
+                            },
+                            {
+                                "date": "2016-05-01",
+                                "name": "王五",
+                                "phone": "12345678903",
+                                "address": "上海市普陀区金沙江路 1516 弄"
+                            },
+                            {
+                                "date": "2016-05-03",
+                                "name": "王小虎",
+                                "phone": "12345678904",
+                                "address": "上海市普陀区金沙江路 1515 弄"
+                            }
+                        ]
+                    };
+                    me.list.total = data.Total;
+                    me.list.tableData = data.Data;
+                }
+            },
+            mounted: function () {
+                var me = this;
+                me.loadData();
+                    
+                var params = $f.getQueryString("id", me._uid);
+                me.$alert("paramters:" + typeof params === "object" ? JSON.stringify(params) : params);
+            }
+        });
+    </script>
+</body>
+</html>

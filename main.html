@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="/wwwroot/webConfig.js"></script>
+    <script src="/wwwroot/scripts/referenceCss.js"></script>
+    <script src="/wwwroot/scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="index" class="page">
+        <header class="background-color-main">
+            <span class="color-white font-size-xxl padding-xl menu-width">{{systemName}}</span>
+            <nav class="color-white user-info">
+                <div class="padding-left-right-xl">
+                    <el-dropdown @command="handleCommand">
+                        <span class="el-dropdown-link color-white">
+                            <span>{{userName}}<img class="avatar margin-left-l" src="images/avatar.jpg" /></span>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item command="ChangePassword">修改密码</el-dropdown-item>
+                            <el-dropdown-item command="a">修改资料</el-dropdown-item>
+                            <el-dropdown-item command="Exit">退出</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
+            </nav>
+        </header>
+        <aside class="menu">
+            <el-col span="24">
+                <el-menu default-active="2" @select="onSelectMenu">
+                    <template v-if="menus.length" v-for="(menu,i) in menus">
+                        <el-submenu v-if="menu.ChildrenModels.length" :index="i">
+                            <template slot="title">
+                                <i :class="[menu.Icon]"></i>{{menu.DisplayName}}
+                            </template>
+                            <el-menu-item v-for="(child,j) in menu.ChildrenModels" :index="i+'-'+j">{{child.DisplayName}}</el-menu-item>
+                        </el-submenu>
+                        <el-menu-item v-else :index="i"><i :class="[menu.Icon]"></i>{{menu.DisplayName}}</el-menu-item>
+                    </template>
+                </el-menu>
+            </el-col>
+
+        </aside>
+        <div class="subPage padding-l">
+            <component :is="currentView" class="content"></component>
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#index",
+            data: {
+                systemName: webConfig.systemName,
+                userName: "",
+                menus: [],
+                currentView: null,
+                selectMenu: null,
+                selectChildMenu: null,
+                history: []
+            },
+            mounted:function() {
+                this.loadMenu();
+            },
+            methods: {
+                loadMenu: function () {
+                    var me = this;
+                    me.$http.get(apiConfig.user_info).then(function (response) {
+                        $f.login(response.data.Data);
+                        me.userName = $f.getUser().NickName;
+                        me.menus = $f.getMenu();
+                    });
+                },
+                loadPage: function (url, fnCallBack) {
+                    var me = this;
+                    var loading = me.$loading({ target: me.$el.querySelector(".subPage") });
+                    $f.getPageComponent({
+                        url: url,
+                        success: function (component) {
+                            loading.close();
+                            me.currentView = component;
+                            me.$nextTick(function () {
+                                if (fnCallBack) fnCallBack();
+                            });
+                        },
+                        error: function () {
+                            loading.close();
+                        }
+                    });
+                },
+                isSelected: function (menu) {
+                    return this.selectMenu && this.selectMenu.name === menu.name;
+                },
+                isChlidSelected: function (menu) {
+                    return this.selectChildMenu && this.selectChildMenu.name === menu.name;
+                },
+                haveChildrenMenu: function () {
+                    return this.getChildrenMenu().length > 0;
+                },
+                getChildrenMenu: function () {
+                    if (this.selectMenu === null) return [];
+                    return this.selectMenu.children;
+                },
+                getMenuByIndexPath: function (pathArray, menus, level) {
+                    var me = this;
+
+                    if (!pathArray.length) return null;
+                    if (!menus.length) return null;
+
+                    for (var i = 0, menu; menu = menus[i]; i++) {
+                        if (pathArray[level] == i) {
+                            if (level === (pathArray.length - 1)) {
+                                return menu;
+                            }
+                            else {
+                                return me.getMenuByIndexPath(pathArray, menu.ChildrenModels, ++level);
+                            }
+                        }
+                    }
+                    return null;
+                },
+                onSelectMenu: function (index) {
+                    var me = this;
+                    var indexs = [];
+
+                    if (typeof index === "number") {
+                        indexs.push(index);
+                    }
+                    else if (typeof index === "string" && index.indexOf("-") > -1) {
+                        indexs = index.split("-");
+                    }
+                    var menu = me.getMenuByIndexPath(indexs, me.menus, 0);
+
+                    me.history = [menu];
+                    if (menu.path !== "") me.loadPage(menu.ActionUrl);
+                },
+                getCurrentPathMenu: function (url, menus) {
+                    var me = this;
+                    for (var i = 0, m; m = menus[i++];) {
+                        if (url.indexOf(m.path) > 0) return { menu: m, subMenu: null };
+                        if (m.children.length) {
+                            var result = me.getCurrentPathMenu(url, m.children);
+                            if (result) {
+                                return { menu: m, subMenu: result.menu };
+                            }
+                        }
+                    }
+                    return null;
+                },
+                selectMenuByUrl: function () {
+                    var result = this.getCurrentPathMenu(location.href, this.menus);
+                    if (result) {
+                        this.selectMenu = result.menu;
+                        this.selectChildMenu = result.subMenu;
+                    } else {
+                        this.onClickMenu(this.menus[0]);
+                    }
+                },
+                handleCommand: function (command) {
+                    switch (command) {
+                        case "ChangePassword":
+                            this.loadPage("/wwwroot/Account/ChangePassword.html");
+                            break;
+                        case "Exit":
+                            this.$confirm('确定退出登录？', '提示', {
+                                confirmButtonText: '确定',
+                                cancelButtonText: '取消',
+                                type: 'warning'
+                            }).then(function () {
+                                $f.logout();
+                            }).catch(function () {
+
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../scripts/vue.min.js"></script>
+    <style>
+        .red {
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="Detail">
+        {{c}}
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#Detail",
+            data: {
+                text: "abc",
+                currentSelect: null
+            },
+            filters: {
+                h: function (v) {
+                    return "hello " + v;
+                }
+            },
+            computed: {
+                c: function () {
+                    return "hello";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

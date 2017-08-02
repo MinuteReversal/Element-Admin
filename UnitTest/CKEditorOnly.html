@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../webConfig.js"></script>
+    <script src="../scripts/referenceCss.js"></script>
+    <script src="../scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="Detail" class="padding-xl form-width">
+        <div id="e1"></div>
+        <button onclick="CKEDITOR.instances.e1.setData('world');">设置值</button>
+    </div>
+    <script>
+        CKEDITOR.replace(document.querySelector("#e1"));
+    </script>
+</body>
+</html>

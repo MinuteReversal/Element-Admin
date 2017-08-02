@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="/wwwroot/webConfig.js"></script>
+    <script src="/wwwroot/scripts/referenceCss.js"></script>
+    <script src="/wwwroot/scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="List">
+        <!--导航-->
+        <el-row class="padding-l">
+            <el-col span="12">
+                <span class="font-weight-blder">列表</span>
+            </el-col>
+            <el-col span="12">
+                <el-breadcrumb separator="/" class="float-right">
+                    <el-breadcrumb-item to="{ path: '/' }">首页</el-breadcrumb-item>
+                    <el-breadcrumb-item>活动管理</el-breadcrumb-item>
+                    <el-breadcrumb-item>活动列表</el-breadcrumb-item>
+                    <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+                </el-breadcrumb>
+            </el-col>
+        </el-row>
+        <!--查询-->
+        <el-form inline="true" model="formInline" class="background-color-minor margin-bottom-m padding-m">
+            <el-form-item>
+                <el-input placeholder="审批人"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-select placeholder="活动区域">
+                    <el-option label="区域一" value="shanghai"></el-option>
+                    <el-option label="区域二" value="beijing"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="loadData">查询</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onAdd">添加</el-button>
+            </el-form-item>
+        </el-form>
+        <!--列表-->
+        <el-table v-bind:data="list.tableData"
+                  border highlight-current-row
+                  v-bind:default-sort="{prop: 'name', order: 'descending'}"
+                  class="col-12">
+            <el-table-column type="selection"
+                             width="55">
+            </el-table-column>
+            <el-table-column prop="date"
+                             label="日期"
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="name"
+                             label="姓名"
+                             sortable
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="address"
+                             label="地址">
+            </el-table-column>
+            <el-table-column prop="TimePaid"
+                             label="支付时间"
+                             width="240">
+                <template scope="scope">
+                    <el-icon name="time"></el-icon>
+                    <span>{{ scope.row.TimePaid|dataFromat}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作"
+                             fixed="right"
+                             width="400">
+                <template scope="scope">
+                    <el-button size="small"
+                               v-on:click="onEdit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button size="small"
+                               type="danger"
+                               v-on:click="onDelete(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+
+        </el-table>
+        <!--分页-->
+        <el-pagination class="clear"
+                       v-on:size-change="handleSizeChange"
+                       v-on:current-change="handleCurrentChange"
+                       v-bind:current-page="list.currentPage"
+                       v-bind:page-sizes="[10, 20, 50, 100]"
+                       v-bind:page-size="list.pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       v-bind:total="list.total">
+        </el-pagination>
+
+        <!--详情-->
+        <el-dialog title="收货地址" v-model="detail.isVisible">
+            <el-form v-bind:model="form" v-bind:rules="rules" ref="form" label-width="100px" class="demo-form">
+                <el-form-item label="活动名称" prop="name">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="活动区域" prop="region">
+                    <el-select v-model="form.region" placeholder="请选择活动区域">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="活动时间" required>
+                    <el-col v-bind:span="11">
+                        <el-form-item prop="date1">
+                            <el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="line" v-bind:span="2">-</el-col>
+                    <el-col v-bind:span="11">
+                        <el-form-item prop="date2">
+                            <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
+                        </el-form-item>
+                    </el-col>
+                </el-form-item>
+                <el-form-item label="即时配送" prop="delivery">
+                    <el-switch on-text="" off-text="" v-model="form.delivery"></el-switch>
+                </el-form-item>
+                <el-form-item label="活动性质" prop="type">
+                    <el-checkbox-group v-model="form.type">
+                        <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
+                        <el-checkbox label="地推活动" name="type"></el-checkbox>
+                        <el-checkbox label="线下主题活动" name="type"></el-checkbox>
+                        <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+                <el-form-item label="特殊资源" prop="resource">
+                    <el-radio-group v-model="form.resource">
+                        <el-radio label="线上品牌商赞助"></el-radio>
+                        <el-radio label="线下场地免费"></el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="活动形式" prop="desc">
+                    <el-input type="textarea" v-model="form.desc"></el-input>
+                </el-form-item>
+                <el-form-item label="数量" prop="DisplayOrder">
+                    <el-input-number v-model="form.DisplayOrder" :disabled="true"></el-input-number>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="detail.isVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submitDetail">确 定</el-button>
+            </div>
+        </el-dialog>
+
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#List",
+            components: $f.allcomponents,
+            data: {
+                form: {
+                    name: '',
+                    region: '',
+                    date1: '',
+                    date2: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: ''
+                },
+                rules: {
+                    name: [
+                      { required: true, message: '请输入活动名称', trigger: 'blur' },
+                      { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                    ],
+                    region: [
+                      { required: true, message: '请选择活动区域', trigger: 'change' }
+                    ],
+                    date1: [
+                      { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                    ],
+                    date2: [
+                      { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+                    ],
+                    type: [
+                      { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+                    ],
+                    resource: [
+                      { required: true, message: '请选择活动资源', trigger: 'change' }
+                    ],
+                    desc: [
+                      { required: true, message: '请填写活动形式', trigger: 'blur' }
+                    ]
+                },
+                detail: {
+
+                    isVisible: false
+                },
+                list: {
+                    loading: false,
+                    pageSize: 10,
+                    tableData: [],
+                    currentPage: 1,
+                    total: 0
+                }
+            },
+            methods: {
+                handleSizeChange: function (val) {
+                    this.list.pageSize = val;
+                    this.loadData();
+                },
+                handleCurrentChange: function (val) {
+                    this.list.currentPage = val;
+                    this.loadData();
+                },
+                onAdd: function () {
+                    var me = this;
+                    me.detail.isVisible = true;
+                },
+                onEdit: function (i, m) {
+                    var me = this;
+                    me.detail.isVisible = true;
+                },
+                onDelete: function (i, m) {
+                    var me = this;
+                    me.$confirm("确定删除？", "确定");
+                },
+                submitDetail: function () {
+                    this.detail.isVisible = false;
+                },
+                getSkip: function () {
+                    var me = this;
+                    return (me.list.currentPage - 1) * me.list.pageSize;
+                },
+                loadData: function () {
+                    var me = this;
+                    me.$http.get("/wwwroot/data/demolist.json", {
+                        params: {
+                            skip: me.getSkip(),
+                            top: me.list.pageSize
+                        }
+                    })
+                    .then(function (response) {
+                        me.list.total = response.data.Total;
+                        me.list.tableData = response.data.Data;
+                    });
+                }
+            },
+            filters: {
+                dataFromat: function (v) {
+                    return MSJsonDateToDate(v).Format("yyyy-MM-dd HH:mm:ss");
+                }
+            },
+            mounted: function () {
+                var me = this;
+                var params = $f.getQueryString("id", me._uid);
+                me.$alert("paramters:" + typeof params === "object" ? JSON.stringify(params) : params);
+            }
+        });
+    </script>
+</body>
+</html>

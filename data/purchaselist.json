@@ -1,0 +1,20 @@
+﻿{
+  "Success": true,
+  "ErrorUrl": "",
+  "ErrorMsg": "",
+  "ExceptionType": 0,
+  "RedirectUrl": "",
+  "Total": 1,
+  "Data": [
+    {
+      "Guid": "00000000-0000-0000-0000-000000000000",
+      "ProductName": "西瓜",
+      "SupplierName": 10,
+      "OperatorName": 100,
+      "Purchaser": "反转的分针",
+      "Number": 3,
+      "Remark": "xxxx",
+      "TimeCreated": "/Date(1491638675825)/"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+﻿{
+  "Success": true,
+  "ErrorUrl": "",
+  "ErrorMsg": "",
+  "ExceptionType": 0,
+  "RedirectUrl": "",
+  "Total": 2,
+  "Data": [
+    {
+      "Guid": "00000000-0000-0000-0000-000000000000",
+      "CategoryName": "进口武器",
+      "DisplayOrder": 1,
+      "TimeCreated": "/Date(1491638675825)/"
+    },
+    {
+      "Guid": "00000000-0000-0000-0000-000000000001",
+      "CategoryName": "水果手机",
+      "DisplayOrder": 3,
+      "TimeCreated": "/Date(1491638675825)/"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../webConfig.js"></script>
+    <script src="../scripts/referenceCss.js"></script>
+    <script src="../scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="Inherit" class="padding-xl form-width">
+        <el-form v-bind:model="form" v-bind:rules="rules" ref="form" label-width="100px" class="demo-form">
+            <el-form-item label="活动区域" prop="region">
+                <ddl v-model="form.region" placeholder="请选择活动区域"></ddl>
+            </el-form-item>
+        </el-form>
+    </div>
+    <script>
+
+        var dropDownList = {
+            mixins: [ELEMENT.Select],
+            data: {
+                ddlOptions: [
+                    { label: "区域一", value: "shanghai" },
+                    { label: "区域二", value: "beijing" }
+                ]
+            },
+            mounted: function () {
+                
+            }
+        };
+
+        var vm = new Vue({
+            el: "#Inherit",
+            data: {
+                select: "1",
+                form: {
+                    region: ""
+                },
+                rules: {
+                }
+            },
+            methods: {
+
+            },
+            components: Object.assign(
+                {},
+                $f.allComponents,
+                { "ddl": dropDownList }
+            ),
+            mounted: function () {
+            }
+        });
+    </script>
+</body>
+</html>

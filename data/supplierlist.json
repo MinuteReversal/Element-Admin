@@ -1,0 +1,24 @@
+﻿{
+  "Success": true,
+  "ErrorUrl": "",
+  "ErrorMsg": "",
+  "ExceptionType": 0,
+  "RedirectUrl": "",
+  "Total": 2,
+  "Data": [
+    {
+      "Guid": "00000000-0000-0000-0000-000000000000",
+      "SupplierName": "商业A",
+      "SupplierPhone": "12345667",
+      "SupplierAddress": "万科B",
+      "TimeCreated": "/Date(1491638675825)/"
+    },
+    {
+      "Guid": "00000000-0000-0000-0000-000000000001",
+      "SupplierName": "商业B",
+      "SupplierPhone": "12345667",
+      "SupplierAddress": "万科A",
+      "TimeCreated": "/Date(1491638675825)/"
+    }
+  ]
+}

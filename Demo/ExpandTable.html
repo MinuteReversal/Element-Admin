@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../webConfig.js"></script>
+    <script src="../scripts/referenceCss.js"></script>
+    <script src="../scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="List">
+        <el-table :data="tableData"
+                  style="width: 100%">
+            <el-table-column type="expand">
+                <template scope="props">
+                    <load-component url="List.html" :parameters="props.row"></load-component>
+                    <load-component url="Detail.html" :parameters="props.row"></load-component>
+                </template>
+            </el-table-column>
+            <el-table-column prop="No"
+                             label="编号"
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="Name"
+                             label="客户名称">
+            </el-table-column>
+            <el-table-column prop="Phone"
+                             label="电话">
+            </el-table-column>
+            <el-table-column prop="GroupTypeCaption"
+                             label="类别"
+                             width="150">
+            </el-table-column>
+            <el-table-column prop="CityName"
+                             label="州市"
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="CountyName"
+                             label="区县"
+                             width="180">
+            </el-table-column>
+            <el-table-column prop="Address"
+                             label="地址">
+            </el-table-column>
+        </el-table>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#List",
+            components: {
+                "load-component": vueLoadComponent
+            },
+            data: {
+                tableData: []
+            },
+            methods: {
+                /*
+                * 改变
+                */
+                handleSizeChange: function () {
+
+                },
+                handleCurrentChange: function () {
+
+                },
+                onEdit: function (i, m) {
+                    var me = this;
+
+                },
+                onDelete: function (i, m) {
+                    var me = this;
+                    me.$confirm("确定删除？", "确定");
+                },
+                loadData: function () {
+                    this.tableData = [{ "Id": 1, "Uid": "decf6bbd-2b85-42b4-a557 - f9845623f633", "Name": "昆明仁涵商贸有限公司", "Phone": "13888001001", "No": "00001", "ContactPersonName": "李雷", "ContactPersonPhone": "13888001001", "Address": "云南省昆明市环城北路3号小城故事B座1311室", "AddressAreaCode": 530102, "AddressLongitudeE6": 102724474, "AddressLatitudeE6": 25052381, "StoreUid": "a964b5a8- 526b-4c22-bce3 - ad0c7c562841", "GroupType": "Group", "GroupTypeCaption": "团体", "IsDeleted": false, "ProvinceName": "云南省", "CityName": "昆明市", "CountyName": "五华区" }, { "Id": 14, "Uid": "2c99e8db-7cdb-4e54 - 930a-86a4612cb7b6", "Name": "刘某华", "Phone": "13588475232", "No": "00002", "ContactPersonName": "刘某华", "ContactPersonPhone": "13588475232", "Address": "高新开发区", "AddressAreaCode": 530112, "AddressLongitudeE6": 102642415, "AddressLatitudeE6": 25038876, "StoreUid": "76071cce- dcb4 - 4412 - bf39 - 3391526a37e4", "GroupType": "Individual", "GroupTypeCaption": "个体", "IsDeleted": false, "ProvinceName": "云南省", "CityName": "昆明市", "CountyName": "西山区" }];
+                }
+            },
+            mounted: function () {
+                var me = this;
+                var params = $f.getQueryString("Uid", me._uid);
+                me.loadData();
+                me.$alert("paramters:" + typeof params === "object" ? JSON.stringify(params) : params);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <script src="./webConfig.js"></script>
+    <script src="./scripts/referenceCss.js"></script>
+    <script src="./scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="login" class="loginBody">
+        <div class="login">
+            <el-form v-bind:model="form" v-bind:rules="rules" ref="form" label-position="top">
+                <header class="text-align-center">
+                    <h3>用户登录</h3>
+                </header>
+                <div>
+                    <el-form-item label="帐号" prop="username">
+                        <el-input v-model="form.username"></el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="passwords">
+                        <el-input type="password" v-model="form.passwords" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-checkbox v-model="form.isRemember">记住密码</el-checkbox>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" v-on:click="login" class="col-12" :loading="loading">登录</el-button>
+                    </el-form-item>
+                </div>
+            </el-form>
+        </div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#login",
+            components: $f.formcomponents,
+            data: {
+                loading: false,
+                rules: {
+                    username: [
+                        { required: true, message: '请输入账号', trigger: 'blur' },
+                        { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+                    ],
+                    passwords: [
+                        { required: true, message: '请输入密码', trigger: 'blur' },
+                        { min: 3, max: 15, message: '长度在 3 到 15 个字符', trigger: 'blur' }
+                    ]
+                },
+                form: {
+                    username: "114233763",
+                    passwords: "12345678",
+                    isRemember: true
+                }
+            },
+            methods: {
+                login: function () {
+                    var me = this;
+                    me.$refs.form.validate(function (valid) {
+                        if (valid) {
+                            me.authUser();
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                },
+                authUser: function () {
+                    var me = this;
+                    var postData = {
+                        userName: me.form.username,
+                        passwordMd5: md5(me.form.passwords)
+                    };
+                    me.$http.get(apiConfig.user_login, postData).then(function (response) { $f.ui.loadPage("/wwwroot/main.html"); });
+                }
+            },
+            mounted: function () {
+                document.title = webConfig.title;
+            }
+        });
+    </script>
+</body>
+</html>

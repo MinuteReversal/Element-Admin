@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../webConfig.js"></script>
+    <script src="../scripts/referenceCss.js"></script>
+    <script src="../scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="demo">
+        <demo-detail ref="detail" v-for="i in 2"></demo-detail>
+        <el-button @click="setForm">对表单设置值</el-button>
+        <el-button @click="submit">提交表单</el-button>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#demo",
+            components: {
+                "demo-detail": vueAsyncComponent("Detail.html", function () {
+                    vm.$refs.detail.$on("submit", function () {
+                        var me = this;
+                        me.$message({
+                            type: "info",
+                            message: "submit"
+                        });
+                    });
+                    vm.$refs.detail.$on("reset", function () {
+                        var me = this;
+                        me.$message({
+                            type: "info",
+                            message: "reset"
+                        });
+                    });
+                })
+            },
+            methods: {
+                setForm: function () {
+                    this.$refs.detail.ruleForm = {
+                        name: "测试名称",
+                        region: 'beijing',
+                        date1: new Date(),
+                        date2: new Date(),
+                        delivery: false,
+                        type: ['地推活动', '线下主题活动'],
+                        resource: '线下场地免费',
+                        desc: '没有'
+                    };
+                },
+                submit: function () {
+                    this.$refs.detail.submitForm();
+                }
+            },
+            mounted: function () {
+                var me = this;
+            }
+        });
+    </script>
+</body>
+</html>

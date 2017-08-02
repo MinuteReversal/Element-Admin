@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../webConfig.js"></script>
+    <script src="../scripts/referenceCss.js"></script>
+    <script src="../scripts/referenceJs.js"></script>
+</head>
+<body>
+    <div id="demo">
+        <el-button @click="o1">打开列表</el-button>
+        <el-button @click="o2">打开表单</el-button>
+        <el-button @click="o3">Dialog</el-button>
+        <el-button @click="o4">Docs</el-button>
+        <el-button @click="o5">ExpandTable</el-button>
+        <el-button @click="o6">LoadCompoment</el-button>
+        <el-button @click="o7">LoaderWindow</el-button>
+        <page-loader ref="pl"></page-loader>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#demo",
+            components: {
+                "page-loader": vueLoadPageComponent
+            },
+            methods: {
+                o1: function () {
+                    this.$refs.pl.add({
+                        name: "列表",
+                        title: "列表",
+                        url: "List.html",
+                        parameters: { id: "123", name: "mno" }
+                    });
+                },
+                o2: function () {
+                    this.$refs.pl.add({
+                        name: "详情",
+                        title: "详情",
+                        url: "Detail.html",
+                        parameters: { id: "123", name: "mno" }
+                    });
+                },
+                o3: function () {
+                    this.$refs.pl.add({
+                        name: "Dialog",
+                        title: "Dialog",
+                        url: "Dialog.html",
+                        parameters: { id: "123", name: "mno" }
+                    });
+                },
+                o4: function () {
+                    this.$refs.pl.add({
+                        name: "Docs",
+                        title: "Docs",
+                        url: "Docs.html",
+                        parameters: { id: "123", name: "mno" }
+                    });
+                },
+                o5: function () {
+                    this.$refs.pl.add({
+                        name: "ExpandTable",
+                        title: "ExpandTable",
+                        url: "ExpandTable.html",
+                        parameters: { id: "123", name: "mno" }
+                    });
+                },
+                o6: function () {
+                    this.$refs.pl.add({
+                        name: "LoadCompoment",
+                        title: "LoadCompoment",
+                        url: "LoadCompoment.html",
+                        parameters: { id: "123", name: "mno" }
+                    });
+                },
+                o7: function () {
+                    this.$refs.pl.add({
+                        name: "LoaderWindow",
+                        title: "LoaderWindow",
+                        url: "LoaderWindow.html",
+                        parameters: { id: "123", name: "mno" }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

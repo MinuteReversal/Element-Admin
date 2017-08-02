@@ -1,0 +1,80 @@
+﻿<div id="DemoDialog" class="padding-xl">
+    <el-button v-on:click="onAlert">弹出(alert)</el-button>
+    <el-button v-on:click="onConfirm">确认(confirm)</el-button>
+    <el-button v-on:click="onPrompt">输入(prompt)</el-button>
+    <el-button v-on:click="onLoading">加载(loading)</el-button>
+</div>
+<script>
+    var vm = new Vue({
+        el: "#DemoDialog",
+        data: {},
+        methods: {
+            onAlert: function () {
+                var me = this;
+                me.$alert('这是一段内容', '标题名称', {
+                    confirmButtonText: '确定',
+                    callback: function (action){
+                        me.$message({
+                            type: 'info',
+                            message: "确定"
+                        });
+                    }
+                });
+            },
+            onConfirm: function () {
+                var me = this;
+                me.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    me.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(function () {
+                    me.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            onPrompt: function () {
+                var me = this;
+                me.$prompt('请输入邮箱', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+                    inputErrorMessage: '邮箱格式不正确'
+                }).then(function (value) {
+                    me.$message({
+                        type: 'success',
+                        message: '你的邮箱是: ' + value
+                    });
+                }).catch(function () {
+                    me.$message({
+                        type: 'info',
+                        message: '取消输入'
+                    });
+                });
+            },
+            onLoading: function () {
+                var loading = this.$loading();
+
+                function timeout(duration) {
+                    return new Promise(function (resolve, reject) {
+                        setTimeout(resolve, duration);
+                    });
+                }
+
+                timeout(1000).then(function () {
+                    loading.close();
+                }).then(function () {
+                    throw new Error("hmm");
+                }).catch(function (err) {
+                    return Promise.all([timeout(100), timeout(200)]);
+                });
+            }
+        }
+    });
+</script>
