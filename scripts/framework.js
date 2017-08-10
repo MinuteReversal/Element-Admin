@@ -1027,7 +1027,7 @@
                 vm.loading = false; //隐藏加载
             }
 
-            if (response.ok) {
+            if (!response.ok) {
                 if (/application\/json/i.test(response.headers.get("Content-Type")) && !response.data.Success) {
                     w.$f.errorHander(response.data);
                     // stop and return response

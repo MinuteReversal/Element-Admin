@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="../../../webConfig.js"></script>
+    <script src="../../referenceCss.js"></script>
+    <script src="../../referenceJs.js"></script>
+    <script src="JavaScript.js"></script>
+</head>
+<body>
+    <div id="areaSelect">
+        <area-select v-model="areacode" :show-province="false" ref="as" :need-value-wrapper="true"></area-select>
+        <el-button @click="areacode='530103'">设置值</el-button>
+        <el-button @click="$alert(areacode)">获取值</el-button>
+        <el-button @click="$refs.as.print();">打印状态</el-button>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#areaSelect",
+            components: Object.assign({}, {
+                "area-select": vueBizAreaSelect
+            },
+                $f.allComponents
+            ),
+            data: {
+                areacode: "530000"
+            },
+            mounted: function () {
+                //this.areacode = "530102";
+            }
+        });
+    </script>
+</body>
+</html>
