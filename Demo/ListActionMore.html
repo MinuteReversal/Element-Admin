@@ -68,7 +68,7 @@
                              fixed="right"
                              width="80">
                 <template scope="scope">
-                    <el-more-button>
+                    <el-more-button :text="'更多'">
                         <el-button size="small" @click="onEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button size="small" type="danger" @click="onDelete(scope.$index, scope.row)">删除</el-button>
                     </el-more-button>
