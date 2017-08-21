@@ -1,18 +1,19 @@
 ﻿/**
  * author      : 反转的分针
  * date        : 20170709
+ * mail        : 114233763@qq.com
  * description : 图片加载
  */
 var vueImagePreview = {
-    template: '<div v-loading="loading" :style="{width:width,height:height}"><img width="100%" height="100%" :src="src" @load="onLoaded"/></div>',
+    template: '<div v-loading="loading" :style="{width:width,height:height}"><img style="width:100%;height:100%;vertical-align:middle;" :src="path" @load="onLoaded" @click="$emit(\'click\')"/></div>',
     props: {
-        "uid": {
+        "src": {
             "type": String,
             "default": ""
         },
         "type": {
             "type": String,
-            "default": "add" //add|default
+            "default": "default" //add|default
         },
         "width": {
             "type": String,
@@ -24,10 +25,10 @@ var vueImagePreview = {
         }
     },
     computed: {
-        "src": function () {
+        "path": function () {
             var me = this;
-            if (typeof me.uid === "string" && me.uid !== "" && me.uid !== Guid.empty.toString()) {
-                webconfig.resourceServerAddress + me.uid;
+            if (typeof me.src === "string" && me.src !== "" && me.src !== Guid.empty.toString()) {
+               return webconfig.resourceServerAddress + me.src;
             }
 
             if (me.type === "add") {

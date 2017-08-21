@@ -1,6 +1,7 @@
 ﻿/**
  * author      : 反转的分针
  * date        : 20170709
+ * mail        : 114233763@qq.com
  * description : 远程加载页面并转化为组件
  */
 var vueLoadComponent = {
@@ -29,8 +30,9 @@ var vueLoadComponent = {
         getParameterUrl: function () {
             var me = this;
             var url = me.path;
-            if (me.params) {
-                return url + "?" + $f.objectToQueryString(me.params);
+            var queryString = $f.objectToQueryString(me.params);
+            if (queryString !== "") {
+                return url + ("?" + queryString);
             }
             return url;
         },
@@ -53,7 +55,7 @@ var vueLoadComponent = {
             if (typeof urlParams.parameters === "string" && urlParams.parameters !== "") {
                 me.params = Object.assign({}, $f.queryStringParamatersToObject(urlParams.parameters), me.parameters);
             }
-            else {
+            else if (me.parameters) {
                 me.params = Object.assign({}, me.parameters);
             }
         },

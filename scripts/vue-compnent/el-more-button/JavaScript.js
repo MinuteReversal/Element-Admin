@@ -1,6 +1,6 @@
 ﻿/**
  * author      : 反转的分针
- * date        : 201708018
+ * date        : 20170709
  * description : 更多按钮
  * example     :
  *
@@ -23,13 +23,9 @@ var elMoreButton = {
                 '<el-popover ref="popover" :trigger="trigger" :placement="placement" :width="width" v-model="visible">' +
                     '<slot></slot>'+
                 '</el-popover>' +
-                '<el-button :icon="icon" v-popover:popover></el-button>' +
+                '<el-button icon="more" v-popover:popover ></el-button>' +
              '</div>',
     props: {
-        "icon": {
-            "type": String,
-            "default":"more"
-        },
         "width": {
             "type": Number,
             "default": 160

@@ -2,23 +2,23 @@
  * author      : 反转的分针
  * date        : 20170709
  * description : 选项卡加载页面
- * depend on   : vueLoadComponent
+ * depend on   : vueLoaderTabsComponent
  */
-var vueLoadPageComponent = {
+var vueLoaderTabsComponent = {
     components: {
         "el-tabs": ELEMENT.Tabs,
         "el-tab-pane": ELEMENT.TabPane,
         "load-component": vueLoadComponent
     },
     template: '<el-tabs v-model="current" type="card" closable @tab-remove="onTemoveTab">' +
-    '<el-tab-pane v-for="(item, index) in list"\n' +
-    ':key="item.name"\n' +
-    ':label="item.title"\n' +
-    ':name="item.name"\n' +
-    '>' +
-    '<load-component :url="item.url" :parameters="item.parameters" @load="onComponentloaded(item,index,$event)" ref="lc"></load-component>' +
-    '</el-tab-pane>' +
-    '</el-tabs>',
+                '<el-tab-pane v-for="(item, index) in list"\n' +
+                ':key="item.name"\n' +
+                ':label="item.title"\n' +
+                ':name="item.name"\n' +
+                '>' +
+                    '<load-component :url="item.url" :parameters="item.parameters" @load="onComponentloaded(item,index,$event)" ref="lc"></load-component>' +
+                '</el-tab-pane>' +
+            '</el-tabs>',
     data: function () {
         return {
             "list": [],

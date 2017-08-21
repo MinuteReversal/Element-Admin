@@ -6,39 +6,38 @@
  * @param {String} src http://xxx.yyy.zzz/abc/def?gh=ijk&lm=nop#qrst 
  * @param {String} value v-model
  * @returns {String|Object} item.DataValue
- * @example
- *  <biz-area-select v-model="search.AreaCode" :show-province="false" ref="as" :need-value-wrapper="true" src="/api/Region"></biz-area-select>
+ * @example <biz-area-select v-model="search.AreaCode" :show-province="false" ref="as" :need-value-wrapper="true" src="/api/Region"></biz-area-select>
  */
 var vueBizAreaSelect = {
     template: '<div v-loading="loading">' +
-    '<el-select v-show="showProvince" v-model="province.value" clearable placeholder="省" @change="onProvinceSelect">' +
-    '<el-option v-for="item in province.options"\n' +
-    ':key = "item.value"\n' +
-    ':label = "item.label"\n' +
-    ':value = "item.value">' +
-    '<span style="float: left">{{ item.label }}</span>' +
-    '<span style="float: right; color: #8492a6; font-size: 13px">{{ item.code }}</span>' +
-    '</el-option>' +
-    '</el-select>' +
-    '<el-select v-show="showCity" v-model="city.value" clearable placeholder="市" @change="onCitySelect">' +
-    '<el-option v-for="item in city.options"\n' +
-    ':key = "item.value"\n' +
-    ':label = "item.label"\n' +
-    ':value = "item.value">' +
-    '<span style="float: left">{{ item.label }}</span>' +
-    '<span style="float: right; color: #8492a6; font-size: 13px">{{ item.code }}</span>' +
-    '</el-option>' +
-    '</el-select>' +
-    '<el-select v-show="showCounty" v-model="county.value" clearable placeholder="区" @change="onCountySelect">' +
-    '<el-option v-for="item in county.options"\n' +
-    ':key = "item.value"\n' +
-    ':label = "item.label"\n' +
-    ':value = "item.value">' +
-    '<span style="float: left">{{ item.label }}</span>' +
-    '<span style="float: right; color: #8492a6; font-size: 13px">{{ item.code }}</span>' +
-    '</el-option>' +
-    '</el-select>' +
-    '</div>',
+                    '<el-select v-show="showProvince" v-model="province.value" clearable placeholder="省" @change="onProvinceSelect">' +
+                        '<el-option v-for="item in province.options"\n' +
+                            ':key = "item.value"\n' +
+                            ':label = "item.label"\n' +
+                            ':value = "item.value">' +
+                                '<span style="float: left">{{ item.label }}</span>' +
+                                '<span style="float: right; color: #8492a6; font-size: 13px">{{ item.code }}</span>' +
+                        '</el-option>' +
+                    '</el-select>' +
+                    '<el-select v-show="showCity" v-model="city.value" clearable placeholder="市" @change="onCitySelect">' +
+                        '<el-option v-for="item in city.options"\n' +
+                            ':key = "item.value"\n' +
+                            ':label = "item.label"\n' +
+                            ':value = "item.value">' +
+                                '<span style="float: left">{{ item.label }}</span>' +
+                                '<span style="float: right; color: #8492a6; font-size: 13px">{{ item.code }}</span>' +
+                        '</el-option>' +
+                    '</el-select>' +
+                    '<el-select v-show="showCounty" v-model="county.value" clearable placeholder="区" @change="onCountySelect">' +
+                        '<el-option v-for="item in county.options"\n' +
+                            ':key = "item.value"\n' +
+                            ':label = "item.label"\n' +
+                            ':value = "item.value">' +
+                                '<span style="float: left">{{ item.label }}</span>' +
+                                '<span style="float: right; color: #8492a6; font-size: 13px">{{ item.code }}</span>' +
+                        '</el-option>' +
+                    '</el-select>' +
+                '</div>',
     props: {
         "showProvince": {
             "type": Boolean,
@@ -90,7 +89,7 @@ var vueBizAreaSelect = {
             "loading": true,
             "val": "",
             "areas": [],
-            "syncValue": ""
+            "syncValue":""
         };
     },
     watch: {
@@ -258,8 +257,7 @@ var vueBizAreaSelect = {
                 me.loading = false;
                 me.areas = me.areaTreeToCaseCaderTree(response.data);
                 me.province.options = me.areas;
-                if (me.syncValue !== "") me.setValue(me.syncValue);
-                else me.setValue(me.value);
+                me.setValue(me.syncValue);
             });
         }
     },

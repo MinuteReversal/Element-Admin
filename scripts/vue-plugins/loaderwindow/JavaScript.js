@@ -1,9 +1,8 @@
 ﻿/*
-* author      : zhy
-*   mail      : mailzy@vip.qq.com
-*   date      : 20170709
-* plugin      : loaderwindow
-* depend on   : vueLoadComponent
+* author : zhy
+*   mail : mailzy@vip.qq.com
+*   date : 20170709
+* plugin : visittask
 * example: this.$emptywindow().then().catch();
 */
 (function (global, factory) {
@@ -26,6 +25,7 @@
                 var settings = {
                     title: "",
                     url: "",
+                    size: "small",//tiny/small/large/full
                     parameters: null,
                     fnThen: function () { },
                     fnCatch: function () { }
@@ -37,11 +37,20 @@
                 else if (typeof arguments[0] === "object") {
                     Object.assign(settings, options);
                 }
+
                 if (typeof arguments[1] === "object") {
                     settings.parameters = arguments[1];
                 }
+                else if (typeof arguments[1] === "string") {
+                    settings.title = arguments[1];
+                }
+
                 if (typeof arguments[2] === "string") {
                     settings.title = arguments[2];
+                }
+
+                if (typeof arguments[3] === "string") {
+                    settings.size = arguments[3];
                 }
 
                 return new Vue({
@@ -59,11 +68,12 @@
                             url: settings.url,
                             parameters: settings.parameters,
                             fnThen: settings.fnThen,
-                            fnCatch: settings.fnCatch
+                            fnCatch: settings.fnCatch,
+                            size: settings.size
                         };
                     },
                     template:
-                    '<el-dialog :title="title" v-model="isVisible" @close="onClose">' +
+                    '<el-dialog :title="title" v-model="isVisible" @close="onClose" :size="size">' +
                     '<load-component :url="url" :parameters="parameters" @load="onComponentloader" ref="lc"></load-component>' +
                     '</el-dialog>',
                     methods: {
@@ -85,19 +95,23 @@
                         },
                         onClose: function () {
                             var me = this;
+
+                            var $data = Object.assign({}, me.$refs.lc.val);
                             me.$refs.lc.$destroy();
-                            if (me.isUserClose) me.fnCatch();
+                            if (me.isUserClose) me.fnCatch($data);
+
                             document.body.removeChild(me.$el);
                         },
                         onComponentloader: function (c) {
                             var me = this;
+
                             c.$on("confirm", function (evt) {
+                                me.fnThen(evt);
                                 me.close();
-                                me.fnThen(evt ? evt : c.$data);
                             });
                             c.$on("cancel", function (evt) {
+                                me.fnCatch(evt);
                                 me.close();
-                                me.fnCatch(evt ? evt : c.$data);
                             });
                         },
                         then: function (fn) {
