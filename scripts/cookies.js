@@ -29,13 +29,13 @@ var docCookies = {
         if (vEnd) {
             switch (vEnd.constructor) {
                 case Number:
-                    sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                    sExpires = vEnd === Infinity ? "; expires=Fri, 31-Dec-9999 15:59:59 GMT" : "; max-age=" + vEnd;
                     break;
                 case String:
                     sExpires = "; expires=" + vEnd;
                     break;
                 case Date:
-                    sExpires = "; expires=" + vEnd.toUTCString();
+                    sExpires = "; expires=" + cookieDate(vEnd);
                     break;
             }
         }
@@ -54,5 +54,20 @@ var docCookies = {
         var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
         for (var nIdx = 0; nIdx < aKeys.length; nIdx++) { aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]); }
         return aKeys;
+    },
+    //https://stackoverflow.com/questions/7374847/expiration-of-cookie-not-working-is-this-wrong
+    cookieDate: function (d) {
+        function d2(n) { return n < 10 ? '0' + n : n; }
+        var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        return '' +
+            days[d.getUTCDay()] + ', ' +
+            d2(d.getUTCDate()) + '-' +
+            months[d.getUTCMonth()] + '-' +
+            d.getUTCFullYear() + ' ' +
+            d2(d.getUTCHours()) + ':' +
+            d2(d.getUTCMinutes()) + ':' +
+            d2(d.getUTCSeconds()) + ' GMT';
     }
 };
