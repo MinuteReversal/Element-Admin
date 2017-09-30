@@ -1005,7 +1005,10 @@
      * @returns {void} 
      * http://cn.vuejs.org/v2/api/#errorHandler
      */
-    w.Vue.config.errorHandler = function (err, vm) {
+    w.Vue.config.errorHandler = function (err, vm, name) {
+        if(name==="render function"){
+            throw new Error("");
+        }
         w.$f.errorHander(err);
     };
 

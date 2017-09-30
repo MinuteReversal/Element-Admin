@@ -146,12 +146,33 @@
       {
         "FunctionGuid": "00000000-0000-0000-0000-000000000000",
         "ParentGuid": "00000000-0000-0000-0000-000000000000",
-        "FunctionName": "导航二",
-        "DisplayName": "导航二",
+        "FunctionName": "异常",
+        "DisplayName": "异常",
         "Icon": "el-icon-menu",
         "ActionUrl": "",
         "FunctionType": "",
-        "ChildrenModels": []
+        "ChildrenModels": [
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "抛出异常",
+            "DisplayName": "抛出异常",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Error/throw.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "vue编译异常",
+            "DisplayName": "vue编译异常",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Error/complie.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          }
+        ]
       },
       {
         "FunctionGuid": "00000000-0000-0000-0000-000000000000",

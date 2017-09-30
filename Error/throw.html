@@ -1,0 +1,11 @@
+﻿<div id="Error" class="padding-xl">
+    <span>抛出异常</span>
+</div>
+<script>
+    new Vue({
+        el:"#Error",
+        mounted:function(){
+            throw new Error("测试异常");
+        }
+    });
+</script>

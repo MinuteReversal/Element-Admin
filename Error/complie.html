@@ -1,0 +1,13 @@
+﻿<div id="Error" class="padding-xl">
+    <span>编译异常无限渲染</span>{{list.join()}}
+</div>
+<script>
+    new Vue({
+        el: "#Error",
+        data: {
+            list: null
+        },
+        mounted: function () {
+        }
+    });
+</script>
