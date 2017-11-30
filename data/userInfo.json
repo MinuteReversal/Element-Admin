@@ -89,6 +89,29 @@
             "ActionUrl": "/wwwroot/Demo/Docs.html",
             "FunctionType": "",
             "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "面包削",
+            "DisplayName": "面包削",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Demo/Breadcrumb.html",
+            "FunctionType": "",
+            "ChildrenModels": [
+              {
+                "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+                "ParentGuid": "00000000-0000-0000-0000-000000000000",
+                "FunctionName": "面包削-详情",
+                "DisplayName": "面包削-详情",
+                "Icon": "el-icon-message",
+                "ActionUrl": "/wwwroot/Demo/Breadcrumb.html",
+                "FunctionType": "",
+                "ChildrenModels": [
+                  
+                ]
+              }
+            ]
           }
         ]
       },
