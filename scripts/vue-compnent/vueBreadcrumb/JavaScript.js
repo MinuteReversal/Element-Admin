@@ -5,9 +5,13 @@
  * description : 面包削
  */
 var vueBreadcrumb = {
-    template: '<el-breadcrumb :separator="separator">' +
-        '<el-breadcrumb-item v-for="p in paths" @click="onClick(p)">{{p[displayField]}}</el-breadcrumb-item>' +
-        '</el-breadcrumb>',
+    template:
+        '<div class="el-breadcrumb">' +
+        '<span class="el-breadcrumb__item" v-for="p in paths" @click="onClick(p)">' +
+        '<span class="el-breadcrumb__item__inner">{{p[displayField]}}</span>' +
+        '<span class="el-breadcrumb__separator">{{separator}}</span>' +
+        '</span>' +
+        '</div>',
     props: {
         "menus": {
             "type": Array,
@@ -15,7 +19,7 @@ var vueBreadcrumb = {
         },
         "separator": {
             "type": String,
-            "deafult": "/"
+            "default": '/'
         },
         "childrenField": {
             "type": String,
@@ -41,8 +45,8 @@ var vueBreadcrumb = {
         }
     },
     methods: {
-        onClick: function (path) {
-
+        onClick: function (model) {
+            this.$emit("click", model);
         },
         getPaths: function (menus, path) {
             var me = this;
@@ -59,10 +63,6 @@ var vueBreadcrumb = {
             }
             return paths;
         }
-    },
-    components: {
-        "el-breadcrumb": ELEMENT.Breadcrumb,
-        "el-breadcrumb-item": ELEMENT.BreadcrumbItem,
     },
     mounted: function () {
     }

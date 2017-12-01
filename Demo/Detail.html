@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="zh-cn">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
@@ -13,6 +14,7 @@
     <script src="../scripts/referenceCss.js"></script>
     <script src="../scripts/referenceJs.js"></script>
 </head>
+
 <body>
     <div id="Detail" class="padding-xl form-width">
         <el-form v-bind:model="form" v-bind:rules="rules" ref="form" label-width="100px" class="demo-form">
@@ -63,7 +65,9 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" v-on:click="submit">立即创建</el-button>
-                <el-button v-on:click="reset">重置</el-button>
+                <el-tooltip content="Top center" placement="top">
+                    <el-button v-on:click="reset">重置</el-button>
+                </el-tooltip>
                 <el-button v-on:click="close">关闭</el-button>
             </el-form-item>
         </el-form>
@@ -143,4 +147,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -17,7 +17,7 @@
 
 <body>
     <div id="Bread">
-        <bread :menus="menus" :current-display-name="name"></bread>
+        <bread :menus="menus" :current-display-name="name" @click="onClick"></bread>
         <el-input v-model="name"></el-input>
     </div>
     <script>
@@ -25,11 +25,14 @@
             el: "#Bread",
             data: {
                 menus: [],
-                name: ""
+                name: "面包削-详情"
             },
             methods: {
                 getMenu: function () {
                     this.menus = $f.getMenu();
+                },
+                onClick: function (model) {
+                    
                 }
             },
             components: {
