@@ -11,19 +11,19 @@
  * @param {String} value v-model
  * @returns {String|Object} item.DataValue
  * @example
- *  <biz-muddled v-model="ruleForm.store1" src="/Data/Stores" :show-columns="['Name','SerialNumber']" display-field="Name" value-field="Uid" placeholder="门店列表绑定Uid"></biz-muddled><br />
- *  <biz-muddled v-model="ruleForm.store2" src="/Data/Stores" :show-columns="['Name','SerialNumber']" display-field="Name" value-field="model" placeholder="门店列表绑定模型"></biz-muddled><br />
+ *  <biz-muddled v-model="ruleForm.store1" src="/Data/Stores" :show-columns="['Name','SerialNumber']" display-field="Name" value-field="Uid" placeholder="门店列表绑定Uid"></biz-muddled>
+ *  <biz-muddled v-model="ruleForm.store2" src="/Data/Stores" :show-columns="['Name','SerialNumber']" display-field="Name" value-field="model" placeholder="门店列表绑定模型"></biz-muddled>
  */
 var vueBizMuddled = {
-    template: '<el-select v-model="val" clearable filterable remote :loading="loading" :remote-method="getData" :placeholder="placeholder" @change="handleChange">' +
-                    '<el-option v-for="item in options"' +
-                            ':key = "getValueField(item)"' +
-                            ':label = "item[displayField]"' +
-                            ':value = "getValueField(item)">' +
-                        '<span style="float: left">{{ item[showColumns[0]] }}</span>' +
-                        '<span v-show="showColumns[1]" style="float: right; color: #8492a6; font-size: 13px">{{ item[showColumns[1]] }}</span>' +
-                    '</el-option>' +
-               '</el-select>',
+    template: '<el-select v-model="val" clearable filterable :remote="remote" :loading="loading" :remote-method="getData" :placeholder="placeholder" @change="handleChange">' +
+    '<el-option v-for="item in options" ' +
+    ':key = "item" ' +
+    ':label = "item[displayField]" ' +
+    ':value = "getValueField(item)">' +
+    '<span style="float: left">{{ item[showColumns[0]] }}</span>' +
+    '<span v-show="showColumns[1]" style="float: right; color: #8492a6; font-size: 13px">{{ item[showColumns[1]] }}</span>' +
+    '</el-option>' +
+    '</el-select>',
     props: {
         "src": {
             "type": String,
@@ -45,6 +45,14 @@ var vueBizMuddled = {
             "type": String,
             "default": "Name"
         },
+        "isDistinct": {
+            "type": Boolean,
+            "default": false
+        },
+        "remote": {
+            "type": Boolean,
+            "default": true
+        },
         "value": {
             "type": String,
             "default": ""
@@ -52,7 +60,7 @@ var vueBizMuddled = {
     },
     data: function () {
         return {
-            "loading":false,
+            "loading": false,
             "val": "",
             "options": []
         };
@@ -79,9 +87,9 @@ var vueBizMuddled = {
         },
         getOdataFilter: function (query) {
             var me = this;
-            if (!query) return undefined;
+            if (typeof query === "string" && query === "") return undefined;
             var odata = [];
-            for (var i=0, column; column = me.showColumns[i]; i++) {
+            for (var i = 0, column; column = me.showColumns[i]; i++) {
                 odata.push("substringof('" + query + "', " + column + ") eq true");
             }
             return odata.join(" or ");
@@ -89,20 +97,55 @@ var vueBizMuddled = {
         getData: function (query) {
             var me = this;
             me.loading = true;
-            if (query !== '') {
-                me.$http.get(me.src, {
-                    params: {
-                        $filter: me.getOdataFilter(query)
-                    }
-                }).then(function (response) {
+
+            if (typeof query === 'undefined') {
+                query = "";
+            }
+
+            me.$http.get(me.src, {
+                params: {
+                    $filter: me.getOdataFilter(query),
+                    $select: me.getFields()
+                }
+            }).then(function (response) {
+                if (me.isDistinct && Enumerable) {
+                    me.options = me.distinct(response.data["value"]);
+                } else {
                     me.options = response.data["value"];
-                    me.loading = false;
-                });
-            }
-            else {
-                me.options = [];
+                }
                 me.loading = false;
+            });
+        },
+        distinct: function (arr) {
+            var list = [];
+            var hash = {};
+            for (var i = 0, item; item = arr[i]; i++) {
+                var key = item;
+                if (typeof key === "object") key = JSON.stringify(item);
+
+                if (hash[key.toString()]) continue;
+
+                hash[key.toString()] = item;
+                list.push(item);
             }
+            return list;
+        },
+        getFields: function () {
+            var me = this;
+            var fields = [];
+            if (me.valueField === "model") {
+                return "*";
+            }
+
+            fields = fields.concat(me.showColumns);
+
+            me.testPush(fields, me.displayField);
+            me.testPush(fields, me.valueField);
+
+            return fields.join(',');
+        },
+        testPush: function (arr, val) {
+            if (arr.indexOf(val) === -1) arr.push(val);
         }
     },
     components: {
