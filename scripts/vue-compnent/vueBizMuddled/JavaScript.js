@@ -15,7 +15,7 @@
  *  <biz-muddled v-model="ruleForm.store2" src="/Data/Stores" :show-columns="['Name','SerialNumber']" display-field="Name" value-field="model" placeholder="门店列表绑定模型"></biz-muddled>
  */
 var vueBizMuddled = {
-    template: '<el-select v-model="val" clearable filterable :filter-method="filterMethod" :remote="remote" :loading="loading" :remote-method="getData" :placeholder="placeholder" @change="handleChange">' +
+    template: '<el-select v-model="val" clearable filterable :filter-method="filterMethod" ref="select" :remote="remote" :loading="loading" :remote-method="getData" :placeholder="placeholder" @change="handleChange">' +
         '<el-option v-for="item in options" ' +
         ':key = "item" ' +
         ':label = "item[displayField]" ' +
@@ -62,7 +62,8 @@ var vueBizMuddled = {
         return {
             "loading": false,
             "val": "",
-            "options": []
+            "options": [],
+            "allOptions": []
         };
     },
     watch: {
@@ -113,6 +114,7 @@ var vueBizMuddled = {
                 } else {
                     me.options = response.data["value"];
                 }
+                me.allOptions = me.options;
                 me.loading = false;
             });
         },
@@ -149,8 +151,9 @@ var vueBizMuddled = {
         },
         filterMethod: function (val) {
             var me = this;
+            if (me.remote) return;
             var foundList = [];
-            for (var i = 0, item; item = me.options[i]; i++) {
+            for (var i = 0, item; item = me.allOptions[i]; i++) {
                 var isMatch = false;
                 for (var j = 0, c; c = me.showColumns[j]; j++) {
                     if (item[c].toString().indexOf(val) > -1) isMatch = true;
@@ -159,9 +162,9 @@ var vueBizMuddled = {
                 if (isMatch) {
                     foundList.push(item);
                 }
+
             }
-            console.log(arguments);
-            return foundList;
+            me.options = foundList;
         }
     },
     components: {
