@@ -15,15 +15,15 @@
  *  <biz-muddled v-model="ruleForm.store2" src="/Data/Stores" :show-columns="['Name','SerialNumber']" display-field="Name" value-field="model" placeholder="门店列表绑定模型"></biz-muddled>
  */
 var vueBizMuddled = {
-    template: '<el-select v-model="val" clearable filterable :remote="remote" :loading="loading" :remote-method="getData" :placeholder="placeholder" @change="handleChange">' +
-    '<el-option v-for="item in options" ' +
-    ':key = "item" ' +
-    ':label = "item[displayField]" ' +
-    ':value = "getValueField(item)">' +
-    '<span style="float: left">{{ item[showColumns[0]] }}</span>' +
-    '<span v-show="showColumns[1]" style="float: right; color: #8492a6; font-size: 13px">{{ item[showColumns[1]] }}</span>' +
-    '</el-option>' +
-    '</el-select>',
+    template: '<el-select v-model="val" clearable filterable :filter-method="filterMethod" :remote="remote" :loading="loading" :remote-method="getData" :placeholder="placeholder" @change="handleChange">' +
+        '<el-option v-for="item in options" ' +
+        ':key = "item" ' +
+        ':label = "item[displayField]" ' +
+        ':value = "getValueField(item)">' +
+        '<span style="float: left">{{ item[showColumns[0]] }}</span>' +
+        '<span v-show="showColumns[1]" style="float: right; color: #8492a6; font-size: 13px">{{ item[showColumns[1]] }}</span>' +
+        '</el-option>' +
+        '</el-select>',
     props: {
         "src": {
             "type": String,
@@ -51,7 +51,7 @@ var vueBizMuddled = {
         },
         "remote": {
             "type": Boolean,
-            "default": true
+            "default": false
         },
         "value": {
             "type": String,
@@ -146,6 +146,22 @@ var vueBizMuddled = {
         },
         testPush: function (arr, val) {
             if (arr.indexOf(val) === -1) arr.push(val);
+        },
+        filterMethod: function (val) {
+            var me = this;
+            var foundList = [];
+            for (var i = 0, item; item = me.options[i]; i++) {
+                var isMatch = false;
+                for (var j = 0, c; c = me.showColumns[j]; j++) {
+                    if (item[c].toString().indexOf(val) > -1) isMatch = true;
+                }
+
+                if (isMatch) {
+                    foundList.push(item);
+                }
+            }
+            console.log(arguments);
+            return foundList;
         }
     },
     components: {

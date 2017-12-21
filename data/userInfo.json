@@ -73,6 +73,26 @@
           {
             "FunctionGuid": "00000000-0000-0000-0000-000000000000",
             "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "在线查询",
+            "DisplayName": "在线查询",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Demo/vueBizMuddled.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
+            "FunctionName": "缓存一次",
+            "DisplayName": "缓存一次",
+            "Icon": "el-icon-message",
+            "ActionUrl": "/wwwroot/Demo/vueBizMuddledOnce.html",
+            "FunctionType": "",
+            "ChildrenModels": []
+          },
+          {
+            "FunctionGuid": "00000000-0000-0000-0000-000000000000",
+            "ParentGuid": "00000000-0000-0000-0000-000000000000",
             "FunctionName": "列表展开加载",
             "DisplayName": "列表展开加载",
             "Icon": "",
@@ -107,9 +127,7 @@
                 "Icon": "el-icon-message",
                 "ActionUrl": "/wwwroot/Demo/Breadcrumb.html",
                 "FunctionType": "",
-                "ChildrenModels": [
-                  
-                ]
+                "ChildrenModels": []
               }
             ]
           }

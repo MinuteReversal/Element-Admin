@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="viewport" content="width=device-width,user-scalable=no" />
+    <title>加载器</title>
+    <script src="../webConfig.js"></script>
+    <script src="../scripts/referenceCss.js"></script>
+    <script src="../scripts/referenceJs.js"></script>
+</head>
+
+<body>
+    <div id="vueBizMuddled">
+        <biz-muddled v-model="ruleForm.store" src="/wwwroot/data/Stores.json" :show-columns="['Name','SerialNumber']" display-field="Name"
+            value-field="Uid" placeholder="输入门店名称或编号"></biz-muddled>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#vueBizMuddled",
+            data: {
+                ruleForm: {
+                    store: ""
+                }
+            },
+            methods: {
+            },
+            components: {
+                "biz-muddled": vueBizMuddled
+            },
+            mounted: function () {
+
+            }
+        });
+    </script>
+</body>
+
+</html>

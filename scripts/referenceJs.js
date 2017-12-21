@@ -23,6 +23,7 @@
         "/scripts/vue-compnent/vueAsyncComponent/JavaScript.js",
         "/scripts/vue-compnent/vueLoadComponent/JavaScript.js",
         "/scripts/vue-compnent/vueBreadcrumb/JavaScript.js",
+        "/scripts/vue-compnent/vueBizMuddled/JavaScript.js",
         "/scripts/vue-plugins/loaderwindow/JavaScript.js",
         "/scripts/framework.js"
     ];
